@@ -3,4 +3,10 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: 123456
-    url: jdbc:postgresql://localhost:5432/enviroment_ucb_db
+    url: jdbc:postgresql://localhost:5432/environment_ucb_db
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
