@@ -4,6 +4,7 @@ public class TokenDto {
     private String authToken;
     private String refreshToken;
 
+
     public TokenDto() {
     }
 
@@ -27,6 +28,7 @@ public class TokenDto {
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
+
 
     @Override
     public String toString() {

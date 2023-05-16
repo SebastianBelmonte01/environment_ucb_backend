@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Map;
 
 @Service
 public class AuthBl {
@@ -33,8 +34,8 @@ public class AuthBl {
         User user = loginDao.findByEmailAndSecret(login.getEmail(), login.getSecret());
         if (user != null) {
             TokenDto tokenDto = new TokenDto();
-            tokenDto.setAuthToken(generateToken(user.getUserId(), "sebastian.belmonte@ucb.edu.bo", "AUTH", 30));
-            tokenDto.setRefreshToken(generateToken(user.getUserId(), "sebastian.belmonte@ucb.edu.bo", "REFRESH", 60));
+            tokenDto.setAuthToken(generateToken(user.getUserId(), user.getEmail(), "AUTH", 30));
+            tokenDto.setRefreshToken(generateToken(user.getUserId(), user.getEmail(), "REFRESH", 60));
             return tokenDto;
         } else {
             return null;
@@ -76,6 +77,39 @@ public class AuthBl {
             System.err.print("Token invalido: " + exception.getMessage());
             return false;
         }
+    }
+
+    public static int getUserIdFromToken(String jwt)  {
+        int userId;
+        try {
+            userId = JWT.require(Algorithm.HMAC256(KEY))
+                    .build()
+                    .verify(jwt)
+                    .getClaim("userId")
+                    .asInt();
+        } catch (JWTVerificationException e) {
+            throw new RuntimeException("JWT no valido");
+        }
+        return userId;
+    }
+
+    public static String getTokenFromHeader(Map<String, String> headers) throws Exception {
+        if(headers.get("Authorization") == null &&
+                headers.get("authorization") == null) {
+            throw new Exception("No token provided");
+        }
+
+        String jwt;
+        if(headers.get("Authorization") != null) {
+            jwt = headers.get("Authorization").split(" ")[1];
+        } else {
+            jwt = headers.get("authorization").split(" ")[1];
+        }
+
+        if(jwt == null || jwt.isEmpty()) {
+            throw new Exception("Missing token.");
+        }
+        return jwt;
     }
 
 
