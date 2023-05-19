@@ -79,7 +79,7 @@ public class AuthBl {
         }
     }
 
-    public static int getUserIdFromToken(String jwt)  {
+    public int getUserIdFromToken(String jwt)  {
         int userId;
         try {
             userId = JWT.require(Algorithm.HMAC256(KEY))
@@ -93,7 +93,7 @@ public class AuthBl {
         return userId;
     }
 
-    public static String getTokenFromHeader(Map<String, String> headers) throws Exception {
+    public String getTokenFromHeader(Map<String, String> headers) throws Exception {
         if(headers.get("Authorization") == null &&
                 headers.get("authorization") == null) {
             throw new Exception("No token provided");

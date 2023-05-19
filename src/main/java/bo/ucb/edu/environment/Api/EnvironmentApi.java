@@ -24,7 +24,6 @@ public class EnvironmentApi {
     public ResponseDto<List<EnvironmentDto>> getEnvironment(@RequestHeader("Authorization") String token){
         ResponseDto<List<EnvironmentDto>> response = new ResponseDto<>();
         AuthBl authBl = new AuthBl();
-        EnvironmentDao environmentDao = new EnvironmentDao();
         if (!authBl.validateToken(token)){
             response.setCode("0001");
             response.setResponse(null);

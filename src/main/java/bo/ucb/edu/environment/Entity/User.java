@@ -31,10 +31,13 @@ public class User {
     @Column(name = "tx_date", nullable = false)
     private Date txDate;
 
+    @OneToOne(mappedBy = "user")
+    private Professor srProfessor;
+
     public User() {
     }
 
-    public User(Long userId, String email, String secret, boolean status, String txHost, String txUser, Date txDate) {
+    public User(Long userId, String email, String secret, boolean status, String txHost, String txUser, Date txDate, Professor srProfessor) {
         this.userId = userId;
         this.email = email;
         this.secret = secret;
@@ -42,6 +45,7 @@ public class User {
         this.txHost = txHost;
         this.txUser = txUser;
         this.txDate = txDate;
+        this.srProfessor = srProfessor;
     }
 
     public Long getUserId() {
@@ -100,6 +104,14 @@ public class User {
         this.txDate = txDate;
     }
 
+    public Professor getSrProfessor() {
+        return srProfessor;
+    }
+
+    public void setSrProfessor(Professor srProfessor) {
+        this.srProfessor = srProfessor;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -110,6 +122,7 @@ public class User {
                 ", txHost='" + txHost + '\'' +
                 ", txUser='" + txUser + '\'' +
                 ", txDate=" + txDate +
+                ", srProfessor=" + srProfessor +
                 '}';
     }
 }
