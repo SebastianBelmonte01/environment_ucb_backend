@@ -2,6 +2,7 @@ package bo.ucb.edu.environment.Entity;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -12,34 +13,39 @@ public class Environment {
     @Column(name = "environment_id")
     private Long environmentId;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type")
     private String type;
 
-    @Column(name = "env_state", nullable = false)
+    @Column(name = "env_state")
     private String envState;
 
-    @Column(name = "status", nullable = false)
-    private boolean status;
+    @Column(name = "status")
+    private Boolean status;
 
-    @Column(name = "tx_host", nullable = false)
+    @Column(name = "tx_host")
     private String txHost;
 
-    @Column(name = "tx_user", nullable = false)
+    @Column(name = "tx_user")
     private String txUser;
 
-    @Column(name = "tx_date", nullable = false)
+    @Column(name = "tx_date")
     private Date txDate;
+
+    @OneToMany(mappedBy = "environment")
+    private List<Classroom> classrooms;
 
     public Environment() {
     }
 
-    public Environment(String type, String envState, boolean status, String txHost, String txUser, Date txDate) {
+    public Environment(Long environmentId, String type, String envState, Boolean status, String txHost, String txUser, Date txDate, List<Classroom> classrooms) {
+        this.environmentId = environmentId;
         this.type = type;
         this.envState = envState;
         this.status = status;
         this.txHost = txHost;
         this.txUser = txUser;
         this.txDate = txDate;
+        this.classrooms = classrooms;
     }
 
     public Long getEnvironmentId() {
@@ -66,11 +72,11 @@ public class Environment {
         this.envState = envState;
     }
 
-    public boolean isStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
@@ -98,6 +104,14 @@ public class Environment {
         this.txDate = txDate;
     }
 
+    public List<Classroom> getClassrooms() {
+        return classrooms;
+    }
+
+    public void setClassrooms(List<Classroom> classrooms) {
+        this.classrooms = classrooms;
+    }
+
     @Override
     public String toString() {
         return "Environment{" +
@@ -108,6 +122,7 @@ public class Environment {
                 ", txHost='" + txHost + '\'' +
                 ", txUser='" + txUser + '\'' +
                 ", txDate=" + txDate +
+                ", classrooms=" + classrooms +
                 '}';
     }
 }

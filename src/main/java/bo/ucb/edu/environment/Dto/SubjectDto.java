@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 public class SubjectDto {
-    private int id;
+    private Long id;
     private String name;
 
     private Set<Integer> parallels;
@@ -12,17 +12,17 @@ public class SubjectDto {
     public SubjectDto() {
     }
 
-    public SubjectDto(int id, String name, Set<Integer> parallels) {
+    public SubjectDto(Long id, String name, Set<Integer> parallels) {
         this.id = id;
         this.name = name;
         this.parallels = parallels;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -40,14 +40,5 @@ public class SubjectDto {
 
     public void setParallels(Set<Integer> parallels) {
         this.parallels = parallels;
-    }
-
-    @Override
-    public String toString() {
-        return "SubjectDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", parallels=" + parallels +
-                '}';
     }
 }

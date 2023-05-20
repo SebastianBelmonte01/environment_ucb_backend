@@ -1,10 +1,8 @@
 package bo.ucb.edu.environment.Bl;
 
 import bo.ucb.edu.environment.Entity.CarrerDepartment;
-import bo.ucb.edu.environment.Repository.CarrerDepartmentRepository;
+import bo.ucb.edu.environment.Dao.CarrerDepartmentRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CarrerDepartmentBl {

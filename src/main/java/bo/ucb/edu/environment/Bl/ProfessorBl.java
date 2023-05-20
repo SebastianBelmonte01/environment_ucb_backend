@@ -1,7 +1,6 @@
 package bo.ucb.edu.environment.Bl;
 
-import bo.ucb.edu.environment.Dao.ProfessorDao;
-import bo.ucb.edu.environment.Dao.UserDao;
+import bo.ucb.edu.environment.Dao.UserRepository;
 import bo.ucb.edu.environment.Dto.ProfessorDto;
 import bo.ucb.edu.environment.Dto.SubjectDto;
 import bo.ucb.edu.environment.Entity.Professor;
@@ -18,11 +17,11 @@ import java.util.Set;
 @Service
 public class ProfessorBl {
     @Autowired
-    private UserDao userDao;
+    private UserRepository userDao;
 
 
     public ProfessorDto getProfessor(Long id){
-        User user = userDao.findById(id);
+        User user = userDao.getReferenceById(id);
         Professor professor = user.getSrProfessor();
         ProfessorDto professorDto = new ProfessorDto();
         professorDto.setProfessorId(professor.getProfessorId());

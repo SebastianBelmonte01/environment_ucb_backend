@@ -1,4 +1,4 @@
-package bo.ucb.edu.environment.Repository;
+package bo.ucb.edu.environment.Dao;
 
 import bo.ucb.edu.environment.Entity.CarrerDepartment;
 import org.springframework.data.jpa.repository.JpaRepository;

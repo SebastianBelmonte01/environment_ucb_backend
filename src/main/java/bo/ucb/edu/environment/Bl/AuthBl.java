@@ -1,6 +1,6 @@
 package bo.ucb.edu.environment.Bl;
 
-import bo.ucb.edu.environment.Dao.LoginDao;
+import bo.ucb.edu.environment.Dao.UserRepository;
 import bo.ucb.edu.environment.Dto.LoginDto;
 import bo.ucb.edu.environment.Dto.TokenDto;
 import bo.ucb.edu.environment.Entity.User;
@@ -13,8 +13,6 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 
-import bo.ucb.edu.environment.Repository.UserRepository;
-import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +22,7 @@ import java.util.Map;
 @Service
 public class AuthBl {
     @Autowired
-    private LoginDao loginDao;
+    private UserRepository loginDao;
 
     public static String KEY = "barcelonaCampeon2023";
 

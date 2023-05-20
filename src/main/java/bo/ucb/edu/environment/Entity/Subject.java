@@ -11,7 +11,7 @@ public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subject_id")
-    private int subjectId;
+    private Long subjectId;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -40,7 +40,7 @@ public class Subject {
     public Subject() {
     }
 
-    public Subject(int subjectId, String name, int code, int credits, boolean status, String txHost, String txUser, Date txDate, List<SubjectProfessor> subjectProfessors) {
+    public Subject(Long subjectId, String name, int code, int credits, boolean status, String txHost, String txUser, Date txDate, List<SubjectProfessor> subjectProfessors) {
         this.subjectId = subjectId;
         this.name = name;
         this.code = code;
@@ -52,11 +52,11 @@ public class Subject {
         this.subjectProfessors = subjectProfessors;
     }
 
-    public int getSubjectId() {
+    public Long getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(int subjectId) {
+    public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
     }
 
@@ -122,20 +122,5 @@ public class Subject {
 
     public void setSubjectProfessors(List<SubjectProfessor> subjectProfessors) {
         this.subjectProfessors = subjectProfessors;
-    }
-
-    @Override
-    public String toString() {
-        return "Subject{" +
-                "subjectId=" + subjectId +
-                ", name='" + name + '\'' +
-                ", code=" + code +
-                ", credits=" + credits +
-                ", status=" + status +
-                ", txHost='" + txHost + '\'' +
-                ", txUser='" + txUser + '\'' +
-                ", txDate=" + txDate +
-                ", subjectProfessors=" + subjectProfessors +
-                '}';
     }
 }

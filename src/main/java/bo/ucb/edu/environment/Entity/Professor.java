@@ -10,7 +10,7 @@ public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "professor_id")
-    private Integer professorId;
+    private Long professorId;
 
     @OneToOne
     @JoinColumn(name = "SR_user_user_id", referencedColumnName = "user_id", unique = true)
@@ -35,13 +35,13 @@ public class Professor {
     @Column(name = "tx_date", nullable = false)
     private Date txDate;
 
-    @OneToMany(mappedBy = "professor")
+    @OneToMany(mappedBy = "professor", fetch = FetchType.EAGER)
     private List<SubjectProfessor> subjectProfessors;
 
     public Professor() {
     }
 
-    public Professor(Integer professorId, User user, String name, String type, boolean status, String txHost, String txUser, Date txDate, List<SubjectProfessor> subjectProfessors) {
+    public Professor(Long professorId, User user, String name, String type, boolean status, String txHost, String txUser, Date txDate, List<SubjectProfessor> subjectProfessors) {
         this.professorId = professorId;
         this.user = user;
         this.name = name;
@@ -53,11 +53,11 @@ public class Professor {
         this.subjectProfessors = subjectProfessors;
     }
 
-    public Integer getProfessorId() {
+    public Long getProfessorId() {
         return professorId;
     }
 
-    public void setProfessorId(Integer professorId) {
+    public void setProfessorId(Long professorId) {
         this.professorId = professorId;
     }
 
@@ -123,20 +123,5 @@ public class Professor {
 
     public void setSubjectProfessors(List<SubjectProfessor> subjectProfessors) {
         this.subjectProfessors = subjectProfessors;
-    }
-
-    @Override
-    public String toString() {
-        return "Professor{" +
-                "professorId=" + professorId +
-                ", user=" + user +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", status=" + status +
-                ", txHost='" + txHost + '\'' +
-                ", txUser='" + txUser + '\'' +
-                ", txDate=" + txDate +
-                ", subjectProfessors=" + subjectProfessors +
-                '}';
     }
 }

@@ -3,7 +3,7 @@ package bo.ucb.edu.environment.Dto;
 import java.util.List;
 
 public class ProfessorDto {
-    private int professorId;
+    private Long professorId;
 
     private String name;
     private List<SubjectDto> subjects;
@@ -12,17 +12,17 @@ public class ProfessorDto {
     public ProfessorDto() {
     }
 
-    public ProfessorDto(int professorId, String name, List<SubjectDto> subjects) {
+    public ProfessorDto(Long professorId, String name, List<SubjectDto> subjects) {
         this.professorId = professorId;
         this.name = name;
         this.subjects = subjects;
     }
 
-    public int getProfessorId() {
+    public Long getProfessorId() {
         return professorId;
     }
 
-    public void setProfessorId(int professorId) {
+    public void setProfessorId(Long professorId) {
         this.professorId = professorId;
     }
 

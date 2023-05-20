@@ -67,8 +67,6 @@ public class SubjectProfessor {
     public String toString() {
         return "SubjectProfessor{" +
                 "subjectProfessorId=" + subjectProfessorId +
-                ", professor=" + professor +
-                ", subject=" + subject +
                 ", parallel=" + parallel +
                 '}';
     }
