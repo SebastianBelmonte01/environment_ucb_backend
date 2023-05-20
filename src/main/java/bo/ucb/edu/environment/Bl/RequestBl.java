@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class RequestBl {
@@ -25,11 +26,11 @@ public class RequestBl {
 
     public RequestDto createRequest(RequestDto requestDto, int id) {
         Professor professor = professorRepository.getProfessorByUserId(id);
-        Environment environment = environmentRepository.findById(requestDto.getEnvironment()).orElseThrow();
-        Subject subject = subjectRepository.findById(requestDto.getSubject()).orElseThrow();
+        Environment environment = environmentRepository.findEnvironmentByType(requestDto.getEnvironment());
+        Subject subject = subjectRepository.findSubjectByName(requestDto.getSubject());
 
 
-        SubjectProfessor subjectProfessor = subjectProfessorRepository.findBySubjectAndProfessorAndParallelIs(subject.getSubjectId(), professor.getProfessorId(), requestDto.getParallel());
+        SubjectProfessor subjectProfessor = subjectProfessorRepository.findBySubjectAndProfessorAndParallelIs(subject, professor, requestDto.getParallel());
         Request request = new Request();
         request.setEnvironment(environment);
         request.setDate(requestDto.getDate());
@@ -43,15 +44,28 @@ public class RequestBl {
         request.setTxDate(new Date());
         request.setTxUser("admin");
         request.setProfessor(professor);
-
-        System.out.println("Professor: " + professor);
-        System.out.println("Subject: " + subject);
-        System.out.println("SubjectProfessor: " + subjectProfessor);
-
         request.setSubjectProfessor(subjectProfessor);
-        System.out.println("Request: " + request);
-
         requestRepository.save(request);
         return requestDto;
     }
+
+    public RequestDto getLastRequest (int id){
+        Professor professor = professorRepository.getProfessorByUserId(id);
+        Request request = requestRepository.findTopByProfessorOrderByRequestIdDesc(professor);
+        RequestDto requestDto = new RequestDto();
+        requestDto.setId(request.getRequestId());
+        requestDto.setProfessorName(request.getProfessor().getName());
+        requestDto.setDate(request.getDate());
+        requestDto.setInitTime(request.getStartTime());
+        requestDto.setEndTime(request.getEndTime());
+        requestDto.setEnvironment(request.getEnvironment().getType());
+        requestDto.setSubject(request.getSubjectProfessor().getSubject().getName());
+        requestDto.setParallel(request.getSubjectProfessor().getParallel());
+        requestDto.setPeople(request.getPeople());
+        requestDto.setReason(request.getReason());
+        return requestDto;
+    }
+
+
+
 }

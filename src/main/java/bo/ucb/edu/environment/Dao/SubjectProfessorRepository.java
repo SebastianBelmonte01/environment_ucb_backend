@@ -11,6 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SubjectProfessorRepository extends JpaRepository<SubjectProfessor, Long> {
 
-    @Query(value = "SELECT * FROM SR_subject_professor WHERE SR_subject_subject_id = :subjectId AND SR_professor_professor_id = :professorId AND parallel = :parallel", nativeQuery = true)
-    SubjectProfessor findBySubjectAndProfessorAndParallelIs(@Param("subjectId") Long subjectId, @Param("professorId") Long professorId, @Param("parallel") int parallel);
+    SubjectProfessor findBySubjectAndProfessorAndParallelIs(Subject subject, Professor professor, int parallel);
 }

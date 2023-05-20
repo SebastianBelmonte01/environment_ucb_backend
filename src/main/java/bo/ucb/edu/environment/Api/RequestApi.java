@@ -7,6 +7,7 @@ import bo.ucb.edu.environment.Dto.ResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,5 +33,22 @@ public class RequestApi {
         response.setResponse(requestBl.createRequest(requestDto, id));
         return response;
     }
+
+    @GetMapping("/request/last")
+    public ResponseDto<RequestDto> getRequest (@RequestHeader  Map<String, String> headers) throws Exception{
+        ResponseDto<RequestDto> response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if(!authBl.validateToken(token)){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(requestBl.getLastRequest(id));
+        return response;
+    }
+
 
 }
