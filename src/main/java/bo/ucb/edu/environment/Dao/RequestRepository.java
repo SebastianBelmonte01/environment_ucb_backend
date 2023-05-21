@@ -35,7 +35,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Request findRequestByRequestId(Long id);
 
-
     List<Request> findAllByProfessorAndReqState(Professor professor, String reqState);
 
 

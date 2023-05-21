@@ -85,21 +85,6 @@ public class RequestApi {
         response.setResponse(requestBl.getRequestsByState(id, "Pendiente"));
         return response;
     }
-    @GetMapping("/request/accepted")
-    public ResponseDto<List<RequestDto>> getAcceptedRequests(@RequestHeader Map<String, String> headers) throws Exception {
-        ResponseDto<List<RequestDto>> response = new ResponseDto<>();
-        String token = authBl.getTokenFromHeader(headers);
-        int id = authBl.getUserIdFromToken(token);
-        if(!authBl.validateToken(token)){
-            response.setCode("0001");
-            response.setResponse(null);
-            response.setErrorMessage("Invalid credentials");
-            return response;
-        }
-        response.setCode("0000");
-        response.setResponse(requestBl.getRequestsByState(id, "Aceptado"));
-        return response;
-    }
 
     @PutMapping("/request/{requestId}")
     public ResponseDto<RequestDto> cancelRequest(@RequestHeader Map<String, String> headers, @PathVariable("requestId") Long requestId) throws Exception {
@@ -134,37 +119,7 @@ public class RequestApi {
         return response;
     }
 
-    @GetMapping("/admin/request")
-    public ResponseDto<List<RequestDto>> getAllRequestsAdmin(@RequestHeader Map<String, String> headers) throws Exception {
-        ResponseDto<List<RequestDto>> response = new ResponseDto<>();
-        String token = authBl.getTokenFromHeader(headers);
-        int id = authBl.getUserIdFromToken(token);
-        if(!authBl.validateToken(token)){
-            response.setCode("0001");
-            response.setResponse(null);
-            response.setErrorMessage("Invalid credentials");
-            return response;
-        }
-        response.setCode("0000");
-        response.setResponse(requestBl.getAllRequestsAdmin());
-        return response;
-    }
 
-    @PutMapping("/reservation/{reservationId}")
-    public ResponseDto<RequestDto> asignRequest(@RequestHeader Map<String, String> headers, @PathVariable("reservationId") Long reservationId) throws Exception {
-        ResponseDto response = new ResponseDto<>();
-        String token = authBl.getTokenFromHeader(headers);
-        int id = authBl.getUserIdFromToken(token);
-        if(!authBl.validateToken(token)){
-            response.setCode("0001");
-            response.setResponse(null);
-            response.setErrorMessage("Invalid credentials");
-            return response;
-        }
-        response.setCode("0000");
-        response.setResponse(requestBl.acceptRequest(reservationId));
-        return response;
-    }
 
 
 

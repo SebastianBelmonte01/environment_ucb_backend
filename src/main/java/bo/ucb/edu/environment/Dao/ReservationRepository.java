@@ -1,5 +1,6 @@
 package bo.ucb.edu.environment.Dao;
 
+import bo.ucb.edu.environment.Entity.Professor;
 import bo.ucb.edu.environment.Entity.Request;
 import bo.ucb.edu.environment.Entity.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,13 +13,23 @@ import java.util.List;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
     //Select every Request that reqState 'En Esepera'
-    @Query("SELECT sr FROM Reservation sr WHERE sr.resState = 'En Espera'")
-    List<Reservation> finaAllReservationsEnEspera();
+    @Query("SELECT sr FROM Reservation sr WHERE sr.resState = :state")
+    List<Reservation> findAllReservationsState(@Param("state") String state);
 
     //Update the state of the request to 'Aceptada'
     @Modifying
     @Query("UPDATE Reservation sr SET sr.resState = :msg WHERE sr.reservationId = :id")
     void updateReservationState(@Param("id") Long id, @Param("msg") String msg);
+/*
+    @Query("SELECT sres.reservationId, sres.classroomId, sres.request, sres.resState, sres.reasonRej, sres.status, sres.txHost, sres.txUser, sres.txDate "+
+            "FROM Professor sp, Request sr, Reservation sres, Classroom sc, Environment se " +
+            "WHERE sp.professorId = :professor  " +
+            "AND sr.requestId = sres.request.requestId  " +
+            "AND se.environmentId = sr.environment.environmentId  " +
+            "AND sres.classroomId = sc.classroomId  " +
+            "AND sc.environment.environmentId = se.environmentId " +
+            "AND sres.resState = :state")
+    List<Reservation> findAllReservationsByProfesorAndResState(@Param("profesor") Professor professor, @Param("state") String state);
 
-
+ */
 }

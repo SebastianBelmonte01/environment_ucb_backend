@@ -9,23 +9,21 @@ public class ReservationDto {
     private String resState;
     private String reasonRej;
     private boolean status;
-    private String txHost;
-    private String txUser;
-    private Date txDate;
+    private int classroom;
+    private String building;
 
-    public ReservationDto() {
+public ReservationDto() {
     }
 
-    public ReservationDto(Long reservationId, Long classroomId, Long requestId, String resState, String reasonRej, boolean status, String txHost, String txUser, Date txDate) {
+    public ReservationDto(Long reservationId, Long classroomId, Long requestId, String resState, String reasonRej, boolean status, int classroom, String building) {
         this.reservationId = reservationId;
         this.classroomId = classroomId;
         this.requestId = requestId;
         this.resState = resState;
         this.reasonRej = reasonRej;
         this.status = status;
-        this.txHost = txHost;
-        this.txUser = txUser;
-        this.txDate = txDate;
+        this.classroom = classroom;
+        this.building = building;
     }
 
     public Long getReservationId() {
@@ -76,28 +74,20 @@ public class ReservationDto {
         this.status = status;
     }
 
-    public String getTxHost() {
-        return txHost;
+    public int getClassroom() {
+        return classroom;
     }
 
-    public void setTxHost(String txHost) {
-        this.txHost = txHost;
+    public void setClassroom(int classroom) {
+        this.classroom = classroom;
     }
 
-    public String getTxUser() {
-        return txUser;
+    public String getBuilding() {
+        return building;
     }
 
-    public void setTxUser(String txUser) {
-        this.txUser = txUser;
-    }
-
-    public Date getTxDate() {
-        return txDate;
-    }
-
-    public void setTxDate(Date txDate) {
-        this.txDate = txDate;
+    public void setBuilding(String building) {
+        this.building = building;
     }
 
     @Override
@@ -109,9 +99,8 @@ public class ReservationDto {
                 ", resState='" + resState + '\'' +
                 ", reasonRej='" + reasonRej + '\'' +
                 ", status=" + status +
-                ", txHost='" + txHost + '\'' +
-                ", txUser='" + txUser + '\'' +
-                ", txDate=" + txDate +
+                ", classroom=" + classroom +
+                ", building='" + building + '\'' +
                 '}';
     }
 }
