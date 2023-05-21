@@ -1,49 +1,25 @@
-package bo.ucb.edu.environment.Entity;
-import jakarta.persistence.*;
+package bo.ucb.edu.environment.Dto;
 
 import java.util.Date;
 
-
-@Entity
-@Table(name = "SR_reservation")
-public class Reservation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reservation_id")
+public class ReservationDto {
     private Long reservationId;
-
-    @Column(name = "SR_classroom_classroom_id", nullable = false)
     private Long classroomId;
-
-    @OneToOne
-    @JoinColumn(name = "SR_request_request_id", referencedColumnName = "request_id", nullable = false)
-    private Request request;
-
-    @Column(name = "res_state", nullable = false, length = 30)
+    private Long requestId;
     private String resState;
-
-    @Column(name = "reason_rej")
     private String reasonRej;
-
-    @Column(name = "status", nullable = false)
-    private Boolean status;
-
-    @Column(name = "tx_host", nullable = false, length = 30)
+    private boolean status;
     private String txHost;
-
-    @Column(name = "tx_user", nullable = false, length = 50)
     private String txUser;
-
-    @Column(name = "tx_date", nullable = false)
     private Date txDate;
 
-public Reservation() {
+    public ReservationDto() {
     }
 
-    public Reservation(Long reservationId, Long classroomId, Request request, String resState, String reasonRej, Boolean status, String txHost, String txUser, Date txDate) {
+    public ReservationDto(Long reservationId, Long classroomId, Long requestId, String resState, String reasonRej, boolean status, String txHost, String txUser, Date txDate) {
         this.reservationId = reservationId;
         this.classroomId = classroomId;
-        this.request = request;
+        this.requestId = requestId;
         this.resState = resState;
         this.reasonRej = reasonRej;
         this.status = status;
@@ -68,12 +44,12 @@ public Reservation() {
         this.classroomId = classroomId;
     }
 
-    public Request getRequest() {
-        return request;
+    public Long getRequestId() {
+        return requestId;
     }
 
-    public void setRequest(Request request) {
-        this.request = request;
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
     }
 
     public String getResState() {
@@ -92,11 +68,11 @@ public Reservation() {
         this.reasonRej = reasonRej;
     }
 
-    public Boolean getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
@@ -126,10 +102,10 @@ public Reservation() {
 
     @Override
     public String toString() {
-        return "Reservation{" +
+        return "ReservationDto{" +
                 "reservationId=" + reservationId +
                 ", classroomId=" + classroomId +
-                ", request=" + request +
+                ", requestId=" + requestId +
                 ", resState='" + resState + '\'' +
                 ", reasonRej='" + reasonRej + '\'' +
                 ", status=" + status +

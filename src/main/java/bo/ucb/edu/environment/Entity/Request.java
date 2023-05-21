@@ -13,10 +13,6 @@ public class Request {
     private Long requestId;
 
     @ManyToOne
-    @JoinColumn(name = "SR_reservation_reservation_id")
-    private Reservation reservation;
-
-    @ManyToOne
     @JoinColumn(name = "SR_environment_environment_id")
     private Environment environment;
 
@@ -64,9 +60,8 @@ public class Request {
     public Request() {
     }
 
-    public Request(Long requestId, Reservation reservation, Environment environment, Date date, LocalTime startTime, LocalTime endTime, Integer people, String reqState, String reason, String reasonRej, Boolean status, String txHost, Date txDate, String txUser, Professor professor, SubjectProfessor subjectProfessor) {
+    public Request(Long requestId, Environment environment, Date date, LocalTime startTime, LocalTime endTime, Integer people, String reqState, String reason, String reasonRej, Boolean status, String txHost, Date txDate, String txUser, Professor professor, SubjectProfessor subjectProfessor) {
         this.requestId = requestId;
-        this.reservation = reservation;
         this.environment = environment;
         this.date = date;
         this.startTime = startTime;
@@ -89,14 +84,6 @@ public class Request {
 
     public void setRequestId(Long requestId) {
         this.requestId = requestId;
-    }
-
-    public Reservation getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
     }
 
     public Environment getEnvironment() {
@@ -215,6 +202,7 @@ public class Request {
     public String toString() {
         return "Request{" +
                 "requestId=" + requestId +
+                ", environment=" + environment +
                 ", date=" + date +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
@@ -226,6 +214,8 @@ public class Request {
                 ", txHost='" + txHost + '\'' +
                 ", txDate=" + txDate +
                 ", txUser='" + txUser + '\'' +
+                ", professor=" + professor +
+                ", subjectProfessor=" + subjectProfessor +
                 '}';
     }
 }

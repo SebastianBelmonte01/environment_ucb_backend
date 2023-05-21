@@ -3,6 +3,7 @@ package bo.ucb.edu.environment.Bl;
 import bo.ucb.edu.environment.Dao.*;
 import bo.ucb.edu.environment.Dto.RequestDto;
 import bo.ucb.edu.environment.Dto.RequestSearchDto;
+import bo.ucb.edu.environment.Dto.ReservationDto;
 import bo.ucb.edu.environment.Dto.ResponseDto;
 import bo.ucb.edu.environment.Entity.*;
 import bo.ucb.edu.environment.Utils.ReservationTime;
@@ -28,6 +29,8 @@ public class RequestBl {
     private SubjectProfessorRepository subjectProfessorRepository;
     @Autowired
     private ClassroomRepository classroomRepository;
+    @Autowired
+    private ReservationRepository reservationRepository;
 
 
     public RequestDto createRequest(RequestDto requestDto, int id) {
@@ -43,7 +46,7 @@ public class RequestBl {
         request.setStartTime(requestDto.getInitTime());
         request.setEndTime(requestDto.getEndTime());
         request.setPeople(requestDto.getPeople());
-        request.setReqState("Pendiente");
+        request.setReqState("En Espera");
         request.setReason(requestDto.getReason());
         request.setStatus(true);
         request.setTxHost("localhost");
@@ -88,6 +91,29 @@ public class RequestBl {
             requestDto.setParallel(request.getSubjectProfessor().getParallel());
             requestDto.setPeople(request.getPeople());
             requestDto.setReason(request.getReason());
+            requestDto.setState(request.getReqState());
+            requestDtos.add(requestDto);
+        }
+        return requestDtos;
+    }
+
+    public List<RequestDto> getRequestsByState(int id, String state) {
+        Professor professor = professorRepository.getProfessorByUserId(id);
+        List<Request> requests = requestRepository.findAllByProfessorAndReqState(professor, state);
+        List<RequestDto> requestDtos = new ArrayList<>();
+        for(Request request : requests){
+            RequestDto requestDto = new RequestDto();
+            requestDto.setId(request.getRequestId());
+            requestDto.setProfessorName(request.getProfessor().getName());
+            requestDto.setDate(request.getDate());
+            requestDto.setInitTime(request.getStartTime());
+            requestDto.setEndTime(request.getEndTime());
+            requestDto.setEnvironment(request.getEnvironment().getType());
+            requestDto.setSubject(request.getSubjectProfessor().getSubject().getName());
+            requestDto.setParallel(request.getSubjectProfessor().getParallel());
+            requestDto.setPeople(request.getPeople());
+            requestDto.setReason(request.getReason());
+            requestDto.setState(request.getReqState());
             requestDtos.add(requestDto);
         }
         return requestDtos;
@@ -114,28 +140,26 @@ public class RequestBl {
     }
 
     public List<RequestSearchDto> asignEnvironment (Long id) {
+        String message = "";
         List<Classroom> classrooms = classroomRepository.findAllByEnvironmentEnvironmentId(id);
         Map<Long, List<ReservationTime>> map = new HashMap<>();
         for(Classroom classroom : classrooms){
-            ReservationTime reservationTime = new ReservationTime();
-            List<ReservationTime> reservationTimeList = new ArrayList<>();
-            reservationTime.setInitTime(LocalTime.of(8,0,0 ));
-            reservationTime.setEndTiem(LocalTime.of(20, 0, 0));
-            reservationTimeList.add(reservationTime);
-            map.put(classroom.getClassroomId(), reservationTimeList);
+                ReservationTime reservationTime = new ReservationTime();
+                List<ReservationTime> reservationTimeList = new ArrayList<>();
+                reservationTime.setInitTime(LocalTime.of(8,0,0 ));
+                reservationTime.setEndTiem(LocalTime.of(20, 0, 0));
+                reservationTimeList.add(reservationTime);
+                map.put(classroom.getClassroomId(), reservationTimeList);
         }
-        Date date = Date.from(LocalDate.of(2023, 5, 20).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        System.out.println(LocalDate.of(2023, 5, 20));
-        List<RequestSearchDto> requestSearchDtoList = requestRepository.findAllRequests( 1, date);
-        Set<Long> requestsAtended = new HashSet<>();
+        Date date = Date.from(LocalDate.of(2023, 5, 21).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        List<RequestSearchDto> requestSearchDtoList = requestRepository.findAllRequests( 10, date);
+        List<RequestSearchDto> requestsAtended = new ArrayList<>();
+        Set<Long> keys = new HashSet<>();
         for(RequestSearchDto requestSearchDto : requestSearchDtoList) {
             List<ReservationTime> res = map.get(requestSearchDto.getClassroomId());
             for(int i = 0; i<= res.size()-1; i++) {
-                //If the init time is before the request init time,
-                //And end time is after the request end time
-                // Add to res a new Array [init, initRes as end], [endRes as init, end]
-                if(requestsAtended.isEmpty() || !requestsAtended.contains(requestSearchDto.getRequestId())){
-                    if(res.get(i).getInitTime().isBefore(requestSearchDto.getStartTime()) && res.get(i).getEndTiem().isAfter(requestSearchDto.getEndTime())) {
+                if(requestsAtended.isEmpty() || !keys.contains(requestSearchDto.getRequestId())){
+                    if(res.get(i).getInitTime().isBefore(requestSearchDto.getStartTime()) && res.get(i).getEndTiem().isAfter(requestSearchDto.getEndTime()) ) {
                         LocalTime endTime = res.get(i).getEndTiem();
                         res.get(i).setEndTiem(requestSearchDto.getStartTime());
                         ReservationTime newReservation = new ReservationTime();
@@ -143,16 +167,81 @@ public class RequestBl {
                         newReservation.setEndTiem(endTime);
                         System.out.println(newReservation);
                         res.add(newReservation);
-                        requestsAtended.add(requestSearchDto.getRequestId());
+                        keys.add(requestSearchDto.getRequestId());
+                        requestsAtended.add(requestSearchDto);
                         map.put(requestSearchDto.getClassroomId(), res);
                         res.sort(Comparator.comparing(ReservationTime::getInitTime));
+                        //requestRepository.updateRequestByRequestId(requestSearchDto.getRequestId(), message);
+                        if(requestSearchDto.getState().equals("Pendiente")){
+                            Reservation reservation = new Reservation();
+                            reservation.setClassroomId(requestSearchDto.getClassroomId());
+                            reservation.setRequest(requestRepository.findById(requestSearchDto.getRequestId()).get());
+                            reservation.setResState("En Espera");
+                            reservation.setStatus(true);
+                            reservation.setTxDate(new Date());
+                            reservation.setTxHost("localhost");
+                            reservation.setTxUser("sebastianbelmonte");
+                            reservationRepository.save(reservation);
+                        }
                         break;
                     }
+                    else {
+                        message = "Sin Espacio";
+                        requestRepository.updateRequestByRequestId(requestSearchDto.getRequestId(), message);
+                    }
                 }
+
             }
 
         }
-        return requestSearchDtoList;
+        return requestsAtended;
     }
+
+    public List<RequestDto> getAllRequestsAdmin() {
+        List<Reservation> reservations = reservationRepository.finaAllReservationsEnEspera();
+        List<RequestDto> requestDtos = new ArrayList<>();
+        for(Reservation reservation : reservations){
+            Request request = requestRepository.findRequestByRequestId(reservation.getRequest().getRequestId());
+            RequestDto requestDto = new RequestDto();
+            requestDto.setId(reservation.getReservationId());
+            requestDto.setProfessorName(professorRepository.findProfessorByProfessorId(request.getProfessor().getProfessorId()).getName());
+            requestDto.setDate(request.getDate());
+            requestDto.setInitTime(request.getStartTime());
+            requestDto.setEndTime(request.getEndTime());
+            requestDto.setEnvironment(request.getEnvironment().getType());
+            requestDto.setSubject(request.getSubjectProfessor().getSubject().getName());
+            requestDto.setParallel(request.getSubjectProfessor().getParallel());
+            requestDto.setPeople(request.getPeople());
+            requestDto.setReason(request.getReason());
+            requestDtos.add(requestDto);
+        }
+        return requestDtos;
+    }
+
+
+    public RequestDto acceptRequest(Long reservationId){
+        String message = "Aceptado";
+        reservationRepository.updateReservationState(reservationId, message);
+        Reservation reservation = reservationRepository.findById(reservationId).get();
+        Request request = requestRepository.findRequestByRequestId(reservation.getRequest().getRequestId());
+        RequestDto requestDto = new RequestDto();
+        requestDto.setId(request.getRequestId());
+        requestDto.setProfessorName(request.getProfessor().getName());
+        requestDto.setDate(request.getDate());
+        requestDto.setInitTime(request.getStartTime());
+        requestDto.setEndTime(request.getEndTime());
+        requestDto.setEnvironment(request.getEnvironment().getType());
+        requestDto.setSubject(request.getSubjectProfessor().getSubject().getName());
+        requestDto.setParallel(request.getSubjectProfessor().getParallel());
+        requestDto.setPeople(request.getPeople());
+        requestDto.setReason(request.getReason());
+        requestDto.setState(request.getReqState());
+        return requestDto;
+    }
+
+
+
+
+
 
 }

@@ -12,4 +12,9 @@ public interface ProfessorRepository extends JpaRepository<Professor, Long> {
     @Query(value = "SELECT * FROM sr_professor p WHERE p.sr_user_user_id = :userId", nativeQuery=true)
     Professor getProfessorByUserId(@Param("userId") Integer userId);
 
+    Professor findProfessorByProfessorId(Long id);
+
+
+
+
 }

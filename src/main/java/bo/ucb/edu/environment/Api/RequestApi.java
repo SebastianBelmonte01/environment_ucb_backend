@@ -5,6 +5,8 @@ import bo.ucb.edu.environment.Bl.RequestBl;
 import bo.ucb.edu.environment.Dto.RequestDto;
 import bo.ucb.edu.environment.Dto.RequestSearchDto;
 import bo.ucb.edu.environment.Dto.ResponseDto;
+import bo.ucb.edu.environment.Utils.ReservationTime;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
+@Transactional
 public class RequestApi {
     @Autowired
     private AuthBl authBl;
@@ -67,6 +70,37 @@ public class RequestApi {
         return response;
     }
 
+    @GetMapping("/request/pending")
+    public ResponseDto<List<RequestDto>> getPendingRequests(@RequestHeader Map<String, String> headers) throws Exception {
+        ResponseDto<List<RequestDto>> response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if(!authBl.validateToken(token)){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(requestBl.getRequestsByState(id, "Pendiente"));
+        return response;
+    }
+    @GetMapping("/request/accepted")
+    public ResponseDto<List<RequestDto>> getAcceptedRequests(@RequestHeader Map<String, String> headers) throws Exception {
+        ResponseDto<List<RequestDto>> response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if(!authBl.validateToken(token)){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(requestBl.getRequestsByState(id, "Aceptado"));
+        return response;
+    }
+
     @PutMapping("/request/{requestId}")
     public ResponseDto<RequestDto> cancelRequest(@RequestHeader Map<String, String> headers, @PathVariable("requestId") Long requestId) throws Exception {
         ResponseDto response = new ResponseDto<>();
@@ -94,11 +128,44 @@ public class RequestApi {
             response.setErrorMessage("Invalid credentials");
             return response;
         }
-        Long idEnv = 1L;
+        Long idEnv = 10L;
         response.setCode("0000");
         response.setResponse(requestBl.asignEnvironment(idEnv));
         return response;
     }
+
+    @GetMapping("/admin/request")
+    public ResponseDto<List<RequestDto>> getAllRequestsAdmin(@RequestHeader Map<String, String> headers) throws Exception {
+        ResponseDto<List<RequestDto>> response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if(!authBl.validateToken(token)){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(requestBl.getAllRequestsAdmin());
+        return response;
+    }
+
+    @PutMapping("/reservation/{reservationId}")
+    public ResponseDto<RequestDto> asignRequest(@RequestHeader Map<String, String> headers, @PathVariable("reservationId") Long reservationId) throws Exception {
+        ResponseDto response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if(!authBl.validateToken(token)){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(requestBl.acceptRequest(reservationId));
+        return response;
+    }
+
 
 
 

@@ -12,15 +12,18 @@ public class  RequestSearchDto {
     private LocalTime endTime;
     private Long classroomId;
 
+    private String state;
+
     public RequestSearchDto() {
     }
 
-    public RequestSearchDto(Long requestId, Date date, LocalTime startTime, LocalTime endTime, Long classroomId) {
+    public RequestSearchDto(Long requestId, Date date, LocalTime startTime, LocalTime endTime, Long classroomId, String state) {
         this.requestId = requestId;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.classroomId = classroomId;
+        this.state = state;
     }
 
     public Long getRequestId() {
@@ -63,6 +66,14 @@ public class  RequestSearchDto {
         this.classroomId = classroomId;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "RequestSearchDto{" +
@@ -71,6 +82,7 @@ public class  RequestSearchDto {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", classroomId=" + classroomId +
+                ", state='" + state + '\'' +
                 '}';
     }
 }

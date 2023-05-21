@@ -15,10 +15,12 @@ public class RequestDto {
     private Integer people;
     private String reason;
 
+    private String state;
+
     public RequestDto() {
     }
 
-    public RequestDto(Long id, String professorName, Date date, LocalTime initTime, LocalTime endTime, String environment, String subject, Integer parallel, Integer people, String reason) {
+    public RequestDto(Long id, String professorName, Date date, LocalTime initTime, LocalTime endTime, String environment, String subject, Integer parallel, Integer people, String reason, String state) {
         this.id = id;
         this.professorName = professorName;
         this.date = date;
@@ -29,6 +31,7 @@ public class RequestDto {
         this.parallel = parallel;
         this.people = people;
         this.reason = reason;
+        this.state = state;
     }
 
     public Long getId() {
@@ -111,6 +114,14 @@ public class RequestDto {
         this.reason = reason;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "RequestDto{" +
@@ -124,9 +135,7 @@ public class RequestDto {
                 ", parallel=" + parallel +
                 ", people=" + people +
                 ", reason='" + reason + '\'' +
+                ", state='" + state + '\'' +
                 '}';
     }
 }
-
-
-
