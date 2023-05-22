@@ -22,7 +22,7 @@ public class ReservationApi {
     private ReservationBl reservationBl;
 
 
-    @PutMapping("/reservation/{reservationId}")
+    @PutMapping("/reservation/accept/{reservationId}")
     public ResponseDto<RequestDto> asignRequest(@RequestHeader Map<String, String> headers, @PathVariable("reservationId") Long reservationId) throws Exception {
         ResponseDto response = new ResponseDto<>();
         String token = authBl.getTokenFromHeader(headers);
@@ -54,7 +54,7 @@ public class ReservationApi {
         return response;
     }
 
-      @GetMapping("/request/accepted")
+    @GetMapping("/request/accepted")
     public ResponseDto<List<ReservationDto>> getAcceptedRequests(@RequestHeader Map<String, String> headers) throws Exception {
         ResponseDto<List<ReservationDto>> response = new ResponseDto<>();
         String token = authBl.getTokenFromHeader(headers);
@@ -67,6 +67,22 @@ public class ReservationApi {
         }
         response.setCode("0000");
         response.setResponse(reservationBl.getReservatonByState(id, "Aceptado"));
+        return response;
+    }
+
+    @GetMapping("/request/rejected")
+    public ResponseDto<List<ReservationDto>> getRejectedRequests(@RequestHeader Map<String, String> headers) throws Exception {
+        ResponseDto<List<ReservationDto>> response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if(!authBl.validateToken(token)){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(reservationBl.getReservatonByState(id, "Rechazado"));
         return response;
     }
 
@@ -84,6 +100,22 @@ public class ReservationApi {
         }
         response.setCode("0000");
         response.setResponse(reservationBl.getReservationById(reservationId));
+        return response;
+    }
+
+    @PostMapping("/reservation/reject/{reservationId}")
+    public ResponseDto<RequestDto> rejectRequest (@RequestHeader Map<String, String> headers, @PathVariable("reservationId") Long reservationId, @RequestBody String reason) throws Exception {
+        ResponseDto response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if(!authBl.validateToken(token)){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(reservationBl.rejectRequest(reservationId, reason));
         return response;
     }
 

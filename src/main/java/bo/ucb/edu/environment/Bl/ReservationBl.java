@@ -57,7 +57,6 @@ public class ReservationBl {
 
 
     public RequestDto acceptRequest(Long reservationId){
-
         String message = "Aceptado";
         reservationRepository.updateReservationState(reservationId, message);
         Reservation reservation = reservationRepository.findById(reservationId).get();
@@ -108,6 +107,27 @@ public class ReservationBl {
 
 
     public RequestDto getReservationById(Long reservationId){
+        Reservation reservation = reservationRepository.findById(reservationId).get();
+        Request request = requestRepository.findRequestByRequestId(reservation.getRequest().getRequestId());
+        RequestDto requestDto = new RequestDto();
+        requestDto.setId(request.getRequestId());
+        requestDto.setProfessorName(request.getProfessor().getName());
+        requestDto.setDate(request.getDate());
+        requestDto.setInitTime(request.getStartTime());
+        requestDto.setEndTime(request.getEndTime());
+        requestDto.setEnvironment(request.getEnvironment().getType());
+        requestDto.setSubject(request.getSubjectProfessor().getSubject().getName());
+        requestDto.setParallel(request.getSubjectProfessor().getParallel());
+        requestDto.setPeople(request.getPeople());
+        requestDto.setReason(request.getReason());
+        requestDto.setState(request.getReqState());
+        return requestDto;
+    }
+
+    public RequestDto rejectRequest(Long reservationId, String reason){
+        String message = "Rechazado";
+        reservationRepository.updateReservationState(reservationId, message);
+        reservationRepository.updateReservationRejectionMessage(reservationId, reason);
         Reservation reservation = reservationRepository.findById(reservationId).get();
         Request request = requestRepository.findRequestByRequestId(reservation.getRequest().getRequestId());
         RequestDto requestDto = new RequestDto();
