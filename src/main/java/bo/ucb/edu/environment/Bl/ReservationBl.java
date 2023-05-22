@@ -9,7 +9,11 @@ import bo.ucb.edu.environment.Entity.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,7 +34,7 @@ public class ReservationBl {
     private ReservationRepository reservationRepository;
 
     public List<RequestDto> getAllRequestsAdmin() {
-        List<Reservation> reservations = reservationRepository.findAllReservationsState("Espera");
+        List<Reservation> reservations = reservationRepository.findAllReservationsState("En Espera");
         List<RequestDto> requestDtos = new ArrayList<>();
         for(Reservation reservation : reservations){
             Request request = requestRepository.findRequestByRequestId(reservation.getRequest().getRequestId());
@@ -72,15 +76,25 @@ public class ReservationBl {
         requestDto.setState(request.getReqState());
         return requestDto;
     }
-/*
     public List<ReservationDto> getReservatonByState(int id, String state){
         Professor professor = professorRepository.getProfessorByUserId(id);
-        List<Reservation> reservations = reservationRepository.findAllReservationsByProfesorAndResState(professor, state);
+        List<Reservation> reservations = reservationRepository.findAllReservationsByProfesorAndResState(professor.getProfessorId(), state);
         List<ReservationDto> reservationsDtos = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
         for(Reservation reservation : reservations){
             ReservationDto reservationDto = new ReservationDto();
-            reservationDto.setReservationId(reservation.getReservationId());
-            reservationDto.setClassroomId(reservation.getClassroomId());
+            reservationDto.setProfessorName(professor.getName());
+            Date date = reservation.getRequest().getDate();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            reservationDto.setReservationDate(localDate.format(formatter));
+            reservationDto.setReservationTimeInit(reservation.getRequest().getStartTime().format(timeFormatter));
+            reservationDto.setReservationTimeEnd(reservation.getRequest().getEndTime().format(timeFormatter));
+            reservationDto.setSubject(reservation.getRequest().getSubjectProfessor().getSubject().getName());
+            reservationDto.setParallel(reservation.getRequest().getSubjectProfessor().getParallel());
+            reservationDto.setPeople(reservation.getRequest().getPeople());
+            reservationDto.setReason(reservation.getRequest().getReason());
             reservationDto.setRequestId(reservation.getRequest().getRequestId());
             reservationDto.setResState(reservation.getResState());
             reservationDto.setReasonRej(reservation.getReasonRej());
@@ -93,7 +107,6 @@ public class ReservationBl {
     }
 
 
- */
     public RequestDto getReservationById(Long reservationId){
         Reservation reservation = reservationRepository.findById(reservationId).get();
         Request request = requestRepository.findRequestByRequestId(reservation.getRequest().getRequestId());

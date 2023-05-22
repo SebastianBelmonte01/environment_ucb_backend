@@ -3,43 +3,98 @@ package bo.ucb.edu.environment.Dto;
 import java.util.Date;
 
 public class ReservationDto {
-    private Long reservationId;
-    private Long classroomId;
+
+
+    private String professorName;
+    private String reservationDate;
+    private String reservationTimeInit;
+    private String reservationTimeEnd;
+    private String subject;
+    private int parallel;
+    private int people;
     private Long requestId;
     private String resState;
     private String reasonRej;
+
+    private String reason;
     private boolean status;
     private int classroom;
     private String building;
 
-public ReservationDto() {
+    public ReservationDto() {
     }
 
-    public ReservationDto(Long reservationId, Long classroomId, Long requestId, String resState, String reasonRej, boolean status, int classroom, String building) {
-        this.reservationId = reservationId;
-        this.classroomId = classroomId;
+    public ReservationDto(String professorName, String reservationDate, String reservationTimeInit, String reservationTimeEnd, String subject, int parallel, int people, Long requestId, String resState, String reasonRej, String reason, boolean status, int classroom, String building) {
+        this.professorName = professorName;
+        this.reservationDate = reservationDate;
+        this.reservationTimeInit = reservationTimeInit;
+        this.reservationTimeEnd = reservationTimeEnd;
+        this.subject = subject;
+        this.parallel = parallel;
+        this.people = people;
         this.requestId = requestId;
         this.resState = resState;
         this.reasonRej = reasonRej;
+        this.reason = reason;
         this.status = status;
         this.classroom = classroom;
         this.building = building;
     }
 
-    public Long getReservationId() {
-        return reservationId;
+    public String getProfessorName() {
+        return professorName;
     }
 
-    public void setReservationId(Long reservationId) {
-        this.reservationId = reservationId;
+    public void setProfessorName(String professorName) {
+        this.professorName = professorName;
     }
 
-    public Long getClassroomId() {
-        return classroomId;
+    public String getReservationDate() {
+        return reservationDate;
     }
 
-    public void setClassroomId(Long classroomId) {
-        this.classroomId = classroomId;
+    public void setReservationDate(String reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public String getReservationTimeInit() {
+        return reservationTimeInit;
+    }
+
+    public void setReservationTimeInit(String reservationTimeInit) {
+        this.reservationTimeInit = reservationTimeInit;
+    }
+
+    public String getReservationTimeEnd() {
+        return reservationTimeEnd;
+    }
+
+    public void setReservationTimeEnd(String reservationTimeEnd) {
+        this.reservationTimeEnd = reservationTimeEnd;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public int getParallel() {
+        return parallel;
+    }
+
+    public void setParallel(int parallel) {
+        this.parallel = parallel;
+    }
+
+    public int getPeople() {
+        return people;
+    }
+
+    public void setPeople(int people) {
+        this.people = people;
     }
 
     public Long getRequestId() {
@@ -64,6 +119,14 @@ public ReservationDto() {
 
     public void setReasonRej(String reasonRej) {
         this.reasonRej = reasonRej;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public boolean isStatus() {
@@ -93,11 +156,17 @@ public ReservationDto() {
     @Override
     public String toString() {
         return "ReservationDto{" +
-                "reservationId=" + reservationId +
-                ", classroomId=" + classroomId +
+                "professorName='" + professorName + '\'' +
+                ", reservationDate='" + reservationDate + '\'' +
+                ", reservationTimeInit='" + reservationTimeInit + '\'' +
+                ", reservationTimeEnd='" + reservationTimeEnd + '\'' +
+                ", subject='" + subject + '\'' +
+                ", parallel=" + parallel +
+                ", people=" + people +
                 ", requestId=" + requestId +
                 ", resState='" + resState + '\'' +
                 ", reasonRej='" + reasonRej + '\'' +
+                ", reason='" + reason + '\'' +
                 ", status=" + status +
                 ", classroom=" + classroom +
                 ", building='" + building + '\'' +

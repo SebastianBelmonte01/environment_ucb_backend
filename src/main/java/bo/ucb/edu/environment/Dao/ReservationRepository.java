@@ -20,16 +20,16 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Modifying
     @Query("UPDATE Reservation sr SET sr.resState = :msg WHERE sr.reservationId = :id")
     void updateReservationState(@Param("id") Long id, @Param("msg") String msg);
-/*
-    @Query("SELECT sres.reservationId, sres.classroomId, sres.request, sres.resState, sres.reasonRej, sres.status, sres.txHost, sres.txUser, sres.txDate "+
+
+    @Query("SELECT new bo.ucb.edu.environment.Entity.Reservation(sres.reservationId, sres.classroomId, sres.request, sres.resState, sres.reasonRej, sres.status, sres.txHost, sres.txUser, sres.txDate) " +
             "FROM Professor sp, Request sr, Reservation sres, Classroom sc, Environment se " +
-            "WHERE sp.professorId = :professor  " +
-            "AND sr.requestId = sres.request.requestId  " +
-            "AND se.environmentId = sr.environment.environmentId  " +
-            "AND sres.classroomId = sc.classroomId  " +
+            "WHERE sp.professorId = :professorId " +
+            "AND sr.requestId = sres.request.requestId " +
+            "AND se.environmentId = sr.environment.environmentId " +
+            "AND sres.classroomId = sc.classroomId " +
             "AND sc.environment.environmentId = se.environmentId " +
             "AND sres.resState = :state")
-    List<Reservation> findAllReservationsByProfesorAndResState(@Param("profesor") Professor professor, @Param("state") String state);
+    List<Reservation> findAllReservationsByProfesorAndResState(@Param("professorId") Long professorId, @Param("state") String state);
 
- */
+
 }

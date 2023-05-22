@@ -54,7 +54,6 @@ public class ReservationApi {
         return response;
     }
 
-    /*
       @GetMapping("/request/accepted")
     public ResponseDto<List<ReservationDto>> getAcceptedRequests(@RequestHeader Map<String, String> headers) throws Exception {
         ResponseDto<List<ReservationDto>> response = new ResponseDto<>();
@@ -70,7 +69,6 @@ public class ReservationApi {
         response.setResponse(reservationBl.getReservatonByState(id, "Aceptado"));
         return response;
     }
-     */
 
 
     @GetMapping("/reservation/{reservationId}")
