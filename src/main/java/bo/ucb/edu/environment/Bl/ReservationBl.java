@@ -8,6 +8,9 @@ import bo.ucb.edu.environment.Entity.Request;
 import bo.ucb.edu.environment.Entity.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -15,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReservationBl {
@@ -81,9 +85,9 @@ public class ReservationBl {
         List<ReservationDto> reservationsDtos = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
         for(Reservation reservation : reservations){
             ReservationDto reservationDto = new ReservationDto();
+            reservationDto.setReservationId(reservation.getReservationId());
             reservationDto.setProfessorName(professor.getName());
             Date date = reservation.getRequest().getDate();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -145,4 +149,26 @@ public class ReservationBl {
         return requestDto;
     }
 
+    public RequestDto cancelReservation(Long reservationId ){
+        String message = "Cancelado";
+        reservationRepository.updateReservationState(reservationId, message);
+        Reservation reservation = reservationRepository.findById(reservationId).get();
+        Request request = requestRepository.findRequestByRequestId(reservation.getRequest().getRequestId());
+        RequestDto requestDto = new RequestDto();
+        requestDto.setId(request.getRequestId());
+        requestDto.setProfessorName(request.getProfessor().getName());
+        requestDto.setDate(request.getDate());
+        requestDto.setInitTime(request.getStartTime());
+        requestDto.setEndTime(request.getEndTime());
+        requestDto.setEnvironment(request.getEnvironment().getType());
+        requestDto.setSubject(request.getSubjectProfessor().getSubject().getName());
+        requestDto.setParallel(request.getSubjectProfessor().getParallel());
+        requestDto.setPeople(request.getPeople());
+        requestDto.setReason(request.getReason());
+        requestDto.setState(request.getReqState());
+        return requestDto;
+    }
+
 }
+
+

@@ -5,6 +5,8 @@ import bo.ucb.edu.environment.Bl.ReservationBl;
 import bo.ucb.edu.environment.Dto.RequestDto;
 import bo.ucb.edu.environment.Dto.ReservationDto;
 import bo.ucb.edu.environment.Dto.ResponseDto;
+import bo.ucb.edu.environment.Entity.Request;
+import bo.ucb.edu.environment.Entity.Reservation;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -116,6 +118,20 @@ public class ReservationApi {
         }
         response.setCode("0000");
         response.setResponse(reservationBl.rejectRequest(reservationId, reason));
+        return response;
+    }
+
+    @PutMapping("/cancel/{idReservation}")
+    public ResponseDto<RequestDto> cancelReservation(@RequestHeader("Authorization") String token, @PathVariable Long idReservation){
+        ResponseDto response = new ResponseDto<>();
+        if(!authBl.validateToken(token)){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(reservationBl.cancelReservation(idReservation));
         return response;
     }
 

@@ -34,7 +34,9 @@ public class RequestApi {
             return response;
         }
         response.setCode("0000");
-        response.setResponse(requestBl.createRequest(requestDto, id));
+        RequestDto sentRequest =  requestBl.createRequest(requestDto, id);
+        requestBl.asignEnvironment(sentRequest);
+        response.setResponse(sentRequest);
         return response;
     }
 
@@ -102,8 +104,9 @@ public class RequestApi {
         return response;
     }
 
+    /*
     @GetMapping("/asign/request")
-    public ResponseDto<List<RequestSearchDto>> asignClassroom (@RequestHeader Map<String, String> headers) throws Exception {
+    public ResponseDto<List<RequestSearchDto>> asignClassroom (@RequestHeader Map<String, String> headers, @RequestBody) throws Exception {
         ResponseDto response = new ResponseDto<>();
         String token = authBl.getTokenFromHeader(headers);
         int id = authBl.getUserIdFromToken(token);
@@ -118,6 +121,9 @@ public class RequestApi {
         response.setResponse(requestBl.asignEnvironment(idEnv));
         return response;
     }
+
+     */
+
 
 
 

@@ -5,6 +5,7 @@ import java.util.Date;
 public class ReservationDto {
 
 
+    private Long reservationId;
     private String professorName;
     private String reservationDate;
     private String reservationTimeInit;
@@ -24,7 +25,8 @@ public class ReservationDto {
     public ReservationDto() {
     }
 
-    public ReservationDto(String professorName, String reservationDate, String reservationTimeInit, String reservationTimeEnd, String subject, int parallel, int people, Long requestId, String resState, String reasonRej, String reason, boolean status, int classroom, String building) {
+    public ReservationDto(Long reservationId, String professorName, String reservationDate, String reservationTimeInit, String reservationTimeEnd, String subject, int parallel, int people, Long requestId, String resState, String reasonRej, String reason, boolean status, int classroom, String building) {
+        this.reservationId = reservationId;
         this.professorName = professorName;
         this.reservationDate = reservationDate;
         this.reservationTimeInit = reservationTimeInit;
@@ -39,6 +41,14 @@ public class ReservationDto {
         this.status = status;
         this.classroom = classroom;
         this.building = building;
+    }
+
+    public Long getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(Long reservationId) {
+        this.reservationId = reservationId;
     }
 
     public String getProfessorName() {
@@ -156,7 +166,8 @@ public class ReservationDto {
     @Override
     public String toString() {
         return "ReservationDto{" +
-                "professorName='" + professorName + '\'' +
+                "reservationId=" + reservationId +
+                ", professorName='" + professorName + '\'' +
                 ", reservationDate='" + reservationDate + '\'' +
                 ", reservationTimeInit='" + reservationTimeInit + '\'' +
                 ", reservationTimeEnd='" + reservationTimeEnd + '\'' +

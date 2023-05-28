@@ -37,8 +37,6 @@ public class RequestBl {
         Professor professor = professorRepository.getProfessorByUserId(id);
         Environment environment = environmentRepository.findEnvironmentByType(requestDto.getEnvironment());
         Subject subject = subjectRepository.findSubjectByName(requestDto.getSubject());
-
-
         SubjectProfessor subjectProfessor = subjectProfessorRepository.findBySubjectAndProfessorAndParallelIs(subject, professor, requestDto.getParallel());
         Request request = new Request();
         request.setEnvironment(environment);
@@ -46,7 +44,7 @@ public class RequestBl {
         request.setStartTime(requestDto.getInitTime());
         request.setEndTime(requestDto.getEndTime());
         request.setPeople(requestDto.getPeople());
-        request.setReqState("En Espera");
+        request.setReqState("Pendiente");
         request.setReason(requestDto.getReason());
         request.setStatus(true);
         request.setTxHost("localhost");
@@ -61,6 +59,7 @@ public class RequestBl {
     public RequestDto getLastRequest (int id){
         Professor professor = professorRepository.getProfessorByUserId(id);
         Request request = requestRepository.findTopByProfessorAndStatusIsTrueOrderByRequestIdDesc(professor);
+        System.out.println(request);
         RequestDto requestDto = new RequestDto();
         requestDto.setId(request.getRequestId());
         requestDto.setProfessorName(request.getProfessor().getName());
@@ -72,6 +71,7 @@ public class RequestBl {
         requestDto.setParallel(request.getSubjectProfessor().getParallel());
         requestDto.setPeople(request.getPeople());
         requestDto.setReason(request.getReason());
+        requestDto.setState(request.getReqState());
         return requestDto;
     }
 
@@ -136,23 +136,26 @@ public class RequestBl {
         requestDto.setParallel(updatedRequest.getSubjectProfessor().getParallel());
         requestDto.setPeople(updatedRequest.getPeople());
         requestDto.setReason(updatedRequest.getReason());
+        requestDto.setState(updatedRequest.getReqState());
+        System.out.println(requestDto);
         return  requestDto;
     }
 
-    public List<RequestSearchDto> asignEnvironment (Long id) {
+    public void asignEnvironment (RequestDto requestDto) {
+        Environment environment = environmentRepository.findEnvironmentByType(requestDto.getEnvironment());
+        Date date = requestDto.getDate();
         String message = "";
-        List<Classroom> classrooms = classroomRepository.findAllByEnvironmentEnvironmentId(id);
+        List<Classroom> classrooms = classroomRepository.findAllByEnvironmentEnvironmentId(environment.getEnvironmentId());
         Map<Long, List<ReservationTime>> map = new HashMap<>();
         for(Classroom classroom : classrooms){
                 ReservationTime reservationTime = new ReservationTime();
                 List<ReservationTime> reservationTimeList = new ArrayList<>();
-                reservationTime.setInitTime(LocalTime.of(8,0,0 ));
-                reservationTime.setEndTiem(LocalTime.of(20, 0, 0));
+                reservationTime.setInitTime(LocalTime.of(7,0,0 ));
+                reservationTime.setEndTiem(LocalTime.of(22, 0, 0));
                 reservationTimeList.add(reservationTime);
                 map.put(classroom.getClassroomId(), reservationTimeList);
         }
-        Date date = Date.from(LocalDate.of(2023, 5, 21).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        List<RequestSearchDto> requestSearchDtoList = requestRepository.findAllRequests( 10, date);
+        List<RequestSearchDto> requestSearchDtoList = requestRepository.findAllRequests( environment.getEnvironmentId(), date);
         List<RequestSearchDto> requestsAtended = new ArrayList<>();
         Set<Long> keys = new HashSet<>();
         for(RequestSearchDto requestSearchDto : requestSearchDtoList) {
@@ -194,7 +197,23 @@ public class RequestBl {
             }
 
         }
-        return requestsAtended;
+
+    }
+
+    public RequestDto getRequest(RequestDto requestDto){
+        Request request = requestRepository.findRequestByRequestId(requestDto.getId());
+        requestDto.setId(request.getRequestId());
+        requestDto.setProfessorName(request.getProfessor().getName());
+        requestDto.setDate(request.getDate());
+        requestDto.setInitTime(request.getStartTime());
+        requestDto.setEndTime(request.getEndTime());
+        requestDto.setEnvironment(request.getEnvironment().getType());
+        requestDto.setSubject(request.getSubjectProfessor().getSubject().getName());
+        requestDto.setParallel(request.getSubjectProfessor().getParallel());
+        requestDto.setPeople(request.getPeople());
+        requestDto.setReason(request.getReason());
+        requestDto.setState(request.getReqState());
+        return requestDto;
     }
 
 }

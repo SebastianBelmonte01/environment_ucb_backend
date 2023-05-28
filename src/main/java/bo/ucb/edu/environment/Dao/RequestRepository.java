@@ -26,7 +26,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             "AND se.environmentId = sc.environment.environmentId " +
             "AND sr.date = :date " +
             "AND sr.environment.environmentId = :envId")
-    List<RequestSearchDto> findAllRequests(@Param("envId") Integer envId, @Param("date") Date date);
+    List<RequestSearchDto> findAllRequests(@Param("envId") Long envId, @Param("date") Date date);
 
 
     @Modifying

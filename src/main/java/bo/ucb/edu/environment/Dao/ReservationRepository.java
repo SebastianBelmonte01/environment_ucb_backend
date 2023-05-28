@@ -35,5 +35,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("UPDATE Reservation sr SET sr.reasonRej = :msg WHERE sr.reservationId = :id")
     void updateReservationRejectionMessage(@Param("id") Long id, @Param("msg") String msg);
 
+    Reservation findReservationByRequest(Request request);
+
 
 }
