@@ -84,7 +84,7 @@ public class RequestApi {
             return response;
         }
         response.setCode("0000");
-        response.setResponse(requestBl.getRequestsByState(id, "Pendiente"));
+        response.setResponse(requestBl.getRequestsByState(id, "En Espera"));
         return response;
     }
 
