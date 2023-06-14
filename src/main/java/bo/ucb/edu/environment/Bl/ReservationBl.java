@@ -96,6 +96,7 @@ public class ReservationBl {
             reservationDto.setReservationTimeEnd(reservation.getRequest().getEndTime().format(timeFormatter));
             reservationDto.setSubject(reservation.getRequest().getSubjectProfessor().getSubject().getName());
             reservationDto.setParallel(reservation.getRequest().getSubjectProfessor().getParallel());
+            reservationDto.setEnvironment(reservation.getRequest().getEnvironment().getType());
             reservationDto.setPeople(reservation.getRequest().getPeople());
             reservationDto.setReason(reservation.getRequest().getReason());
             reservationDto.setRequestId(reservation.getRequest().getRequestId());
@@ -167,6 +168,26 @@ public class ReservationBl {
         requestDto.setReason(request.getReason());
         requestDto.setState(request.getReqState());
         return requestDto;
+    }
+
+    public ReservationDto registerEntrance(Long reservationId){
+        ReservationDto reservationDto = new ReservationDto();
+        reservationRepository.updateReservationState(reservationId, "Ingresado");
+        Reservation reservation = reservationRepository.findById(reservationId).get();
+        reservationDto.setReservationId(reservation.getReservationId());
+        reservationDto.setRequestId(reservation.getRequest().getRequestId());
+        reservationDto.setProfessorName(reservation.getRequest().getProfessor().getName());
+        reservationDto.setSubject(reservation.getRequest().getSubjectProfessor().getSubject().getName());
+        reservationDto.setParallel(reservation.getRequest().getSubjectProfessor().getParallel());
+        reservationDto.setEnvironment(reservation.getRequest().getEnvironment().getType());
+        reservationDto.setPeople(reservation.getRequest().getPeople());
+        reservationDto.setReason(reservation.getRequest().getReason());
+        reservationDto.setReservationDate(reservation.getRequest().getDate().toString());
+        reservationDto.setReservationTimeInit(reservation.getRequest().getStartTime().toString());
+        reservationDto.setReservationTimeEnd(reservation.getRequest().getEndTime().toString());
+        reservationDto.setResState(reservation.getResState());
+        reservationDto.setReasonRej(reservation.getReasonRej());
+        return reservationDto;
     }
 
 }

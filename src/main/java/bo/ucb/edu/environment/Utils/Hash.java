@@ -12,7 +12,7 @@ public class Hash {
         String salted = input + salt;
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedHash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+            byte[] encodedHash = digest.digest(salted.getBytes(StandardCharsets.UTF_8));
 
             // Convert the byte array to a hexadecimal string representation
             StringBuilder hexString = new StringBuilder();

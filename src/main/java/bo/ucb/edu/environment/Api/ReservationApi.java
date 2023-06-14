@@ -135,4 +135,20 @@ public class ReservationApi {
         return response;
     }
 
+    @PutMapping("/reservation/entrance/{reservationId}")
+    public ResponseDto<ReservationDto> updateReservation(@RequestHeader Map<String, String> headers, @PathVariable("reservationId") Long reservationId) throws Exception {
+        ResponseDto response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if(!authBl.validateToken(token)){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(reservationBl.registerEntrance(reservationId));
+        return response;
+    }
+
 }

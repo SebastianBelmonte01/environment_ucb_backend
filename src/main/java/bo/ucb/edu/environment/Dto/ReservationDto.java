@@ -10,6 +10,7 @@ public class ReservationDto {
     private String reservationDate;
     private String reservationTimeInit;
     private String reservationTimeEnd;
+    private String environment;
     private String subject;
     private int parallel;
     private int people;
@@ -25,12 +26,13 @@ public class ReservationDto {
     public ReservationDto() {
     }
 
-    public ReservationDto(Long reservationId, String professorName, String reservationDate, String reservationTimeInit, String reservationTimeEnd, String subject, int parallel, int people, Long requestId, String resState, String reasonRej, String reason, boolean status, int classroom, String building) {
+    public ReservationDto(Long reservationId, String professorName, String reservationDate, String reservationTimeInit, String reservationTimeEnd, String environment, String subject, int parallel, int people, Long requestId, String resState, String reasonRej, String reason, boolean status, int classroom, String building) {
         this.reservationId = reservationId;
         this.professorName = professorName;
         this.reservationDate = reservationDate;
         this.reservationTimeInit = reservationTimeInit;
         this.reservationTimeEnd = reservationTimeEnd;
+        this.environment = environment;
         this.subject = subject;
         this.parallel = parallel;
         this.people = people;
@@ -41,6 +43,8 @@ public class ReservationDto {
         this.status = status;
         this.classroom = classroom;
         this.building = building;
+
+
     }
 
     public Long getReservationId() {
@@ -81,6 +85,14 @@ public class ReservationDto {
 
     public void setReservationTimeEnd(String reservationTimeEnd) {
         this.reservationTimeEnd = reservationTimeEnd;
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
     }
 
     public String getSubject() {
@@ -163,24 +175,4 @@ public class ReservationDto {
         this.building = building;
     }
 
-    @Override
-    public String toString() {
-        return "ReservationDto{" +
-                "reservationId=" + reservationId +
-                ", professorName='" + professorName + '\'' +
-                ", reservationDate='" + reservationDate + '\'' +
-                ", reservationTimeInit='" + reservationTimeInit + '\'' +
-                ", reservationTimeEnd='" + reservationTimeEnd + '\'' +
-                ", subject='" + subject + '\'' +
-                ", parallel=" + parallel +
-                ", people=" + people +
-                ", requestId=" + requestId +
-                ", resState='" + resState + '\'' +
-                ", reasonRej='" + reasonRej + '\'' +
-                ", reason='" + reason + '\'' +
-                ", status=" + status +
-                ", classroom=" + classroom +
-                ", building='" + building + '\'' +
-                '}';
-    }
 }

@@ -3,6 +3,7 @@ package bo.ucb.edu.environment.Entity;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "SR_user")
@@ -34,10 +35,13 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Professor srProfessor;
 
+    @OneToMany(mappedBy = "srUser", cascade = CascadeType.ALL)
+    private List<UserGroup> userGroups;
+
     public User() {
     }
 
-    public User(Long userId, String email, String secret, boolean status, String txHost, String txUser, Date txDate, Professor srProfessor) {
+    public User(Long userId, String email, String secret, boolean status, String txHost, String txUser, Date txDate, Professor srProfessor, List<UserGroup> userGroups) {
         this.userId = userId;
         this.email = email;
         this.secret = secret;
@@ -46,6 +50,7 @@ public class User {
         this.txUser = txUser;
         this.txDate = txDate;
         this.srProfessor = srProfessor;
+        this.userGroups = userGroups;
     }
 
     public Long getUserId() {
@@ -112,17 +117,13 @@ public class User {
         this.srProfessor = srProfessor;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", email='" + email + '\'' +
-                ", secret='" + secret + '\'' +
-                ", status=" + status +
-                ", txHost='" + txHost + '\'' +
-                ", txUser='" + txUser + '\'' +
-                ", txDate=" + txDate +
-                ", srProfessor=" + srProfessor +
-                '}';
+    public List<UserGroup> getUserGroups() {
+        return userGroups;
     }
+
+    public void setUserGroups(List<UserGroup> userGroups) {
+        this.userGroups = userGroups;
+    }
+
+
 }
