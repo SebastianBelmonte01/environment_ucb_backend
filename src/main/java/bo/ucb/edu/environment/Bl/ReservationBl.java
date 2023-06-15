@@ -1,6 +1,7 @@
 package bo.ucb.edu.environment.Bl;
 
 import bo.ucb.edu.environment.Dao.*;
+import bo.ucb.edu.environment.Dto.EntranceDto;
 import bo.ucb.edu.environment.Dto.RequestDto;
 import bo.ucb.edu.environment.Dto.ReservationDto;
 import bo.ucb.edu.environment.Entity.Professor;
@@ -170,24 +171,20 @@ public class ReservationBl {
         return requestDto;
     }
 
-    public ReservationDto registerEntrance(Long reservationId){
-        ReservationDto reservationDto = new ReservationDto();
-        reservationRepository.updateReservationState(reservationId, "Ingresado");
-        Reservation reservation = reservationRepository.findById(reservationId).get();
-        reservationDto.setReservationId(reservation.getReservationId());
-        reservationDto.setRequestId(reservation.getRequest().getRequestId());
-        reservationDto.setProfessorName(reservation.getRequest().getProfessor().getName());
-        reservationDto.setSubject(reservation.getRequest().getSubjectProfessor().getSubject().getName());
-        reservationDto.setParallel(reservation.getRequest().getSubjectProfessor().getParallel());
-        reservationDto.setEnvironment(reservation.getRequest().getEnvironment().getType());
-        reservationDto.setPeople(reservation.getRequest().getPeople());
-        reservationDto.setReason(reservation.getRequest().getReason());
-        reservationDto.setReservationDate(reservation.getRequest().getDate().toString());
-        reservationDto.setReservationTimeInit(reservation.getRequest().getStartTime().toString());
-        reservationDto.setReservationTimeEnd(reservation.getRequest().getEndTime().toString());
-        reservationDto.setResState(reservation.getResState());
-        reservationDto.setReasonRej(reservation.getReasonRej());
-        return reservationDto;
+
+
+    public EntranceDto registerEntrance(EntranceDto entranceUserDto){
+        EntranceDto entranceDto = new EntranceDto();
+        Reservation reservation = reservationRepository.findById(entranceUserDto.getReservationId()).get();
+        entranceDto.setReservationId(reservation.getReservationId());
+        entranceDto.setBuilding(classroomRepository.findById(reservation.getClassroomId()).get().getBuilding());
+        entranceDto.setClassroom(classroomRepository.findById(reservation.getClassroomId()).get().getCode());
+
+        if(entranceUserDto.getClassroom() != entranceDto.getClassroom() || !entranceUserDto.getBuilding().equals(entranceDto.getBuilding())) {
+            return null;
+        }
+        reservationRepository.updateReservationState(entranceUserDto.getReservationId(), "Completado");
+        return entranceUserDto;
     }
 
 }

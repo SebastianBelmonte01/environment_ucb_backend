@@ -9,4 +9,13 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+  aws:
+    accessKey: AKIA3CSWIFXMEEOMVSDJ
+    secretKey: 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
+  s3:
+    bucket: environments-bucket-ucb
+    region: us-east-1
+    accessKey: ${spring.aws.accessKey}
+    secretKey: ${spring.aws.secretKey}
+
 

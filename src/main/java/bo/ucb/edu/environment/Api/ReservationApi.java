@@ -2,6 +2,7 @@ package bo.ucb.edu.environment.Api;
 
 import bo.ucb.edu.environment.Bl.AuthBl;
 import bo.ucb.edu.environment.Bl.ReservationBl;
+import bo.ucb.edu.environment.Dto.EntranceDto;
 import bo.ucb.edu.environment.Dto.RequestDto;
 import bo.ucb.edu.environment.Dto.ReservationDto;
 import bo.ucb.edu.environment.Dto.ResponseDto;
@@ -135,8 +136,8 @@ public class ReservationApi {
         return response;
     }
 
-    @PutMapping("/reservation/entrance/{reservationId}")
-    public ResponseDto<ReservationDto> updateReservation(@RequestHeader Map<String, String> headers, @PathVariable("reservationId") Long reservationId) throws Exception {
+    @PutMapping("/reservation/entrance")
+    public ResponseDto<EntranceDto> updateReservation(@RequestHeader Map<String, String> headers, @RequestBody EntranceDto entranceDto) throws Exception {
         ResponseDto response = new ResponseDto<>();
         String token = authBl.getTokenFromHeader(headers);
         int id = authBl.getUserIdFromToken(token);
@@ -147,8 +148,33 @@ public class ReservationApi {
             return response;
         }
         response.setCode("0000");
-        response.setResponse(reservationBl.registerEntrance(reservationId));
+        EntranceDto entranceDto1 = reservationBl.registerEntrance(entranceDto);
+        if(entranceDto1 == null){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Ambiente no corresponde");
+            return response;
+        }
+        response.setResponse(reservationBl.registerEntrance(entranceDto));
         return response;
     }
+
+    @GetMapping("/reservation/complete")
+    public ResponseDto<List<ReservationDto>> getCompleteReservations(@RequestHeader Map<String, String> headers) throws Exception {
+        ResponseDto<List<ReservationDto>> response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if(!authBl.validateToken(token)){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+
+        response.setCode("0000");
+        response.setResponse(reservationBl.getReservatonByState(id, "Completado"));
+        return response;
+    }
+
 
 }
