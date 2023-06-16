@@ -176,5 +176,20 @@ public class ReservationApi {
         return response;
     }
 
+    @PutMapping("/reservation/delete/{idReservation}")
+    public ResponseDto<String> deleteReservation(@RequestHeader("Authorization") String token, @PathVariable Long idReservation) {
+        ResponseDto response = new ResponseDto<>();
+        if (!authBl.validateToken(token)) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        reservationBl.deleteReservation(idReservation);
+        response.setResponse("Finalizado");
+        return response;
+    }
+
 
 }

@@ -216,4 +216,10 @@ public class RequestBl {
         return requestDto;
     }
 
+    public void acceptRejection(int userId, Long reservationId){
+        reservationRepository.updateReservationDeletion(reservationId, "Rechazo aceptado");
+    }
+
+
+
 }

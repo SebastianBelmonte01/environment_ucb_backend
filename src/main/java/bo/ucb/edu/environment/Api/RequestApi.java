@@ -104,6 +104,23 @@ public class RequestApi {
         return response;
     }
 
+    @PutMapping("/request/reject/accept/{reservationId}")
+    public ResponseDto<RequestDto> rejectRequest(@RequestHeader Map<String, String> headers, @PathVariable("reservationId") Long reservationId) throws Exception {
+        ResponseDto response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if(!authBl.validateToken(token)){
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        requestBl.acceptRejection(id, reservationId);
+        response.setResponse("El rechazo a sido aceptado");
+        return response;
+    }
+
     /*
     @GetMapping("/asign/request")
     public ResponseDto<List<RequestSearchDto>> asignClassroom (@RequestHeader Map<String, String> headers, @RequestBody) throws Exception {

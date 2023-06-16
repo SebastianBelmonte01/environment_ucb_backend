@@ -187,6 +187,14 @@ public class ReservationBl {
         return entranceUserDto;
     }
 
+    public void deleteReservation(Long reservationId){
+        reservationRepository.updateReservationDeletion(reservationId, "Eliminado");
+    }
+
+    public void acceptedRejection(Long reservationId){
+        reservationRepository.updateReservationState(reservationId, "Rachazo aceptado");
+    }
+
 }
 
 
