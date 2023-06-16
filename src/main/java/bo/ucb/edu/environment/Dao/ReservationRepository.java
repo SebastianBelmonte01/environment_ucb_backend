@@ -41,5 +41,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("UPDATE Reservation sr SET sr.resState = :msg, sr.status = false WHERE sr.reservationId = :id")
     void updateReservationDeletion(@Param("id") Long id, @Param("msg") String msg);
 
+    Reservation findReservationByReservationId(Long id);
+
 
 }

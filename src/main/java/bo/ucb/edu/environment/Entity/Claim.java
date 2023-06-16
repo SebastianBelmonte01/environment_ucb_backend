@@ -1,6 +1,8 @@
 package bo.ucb.edu.environment.Entity;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 
+import java.util.Arrays;
 import java.util.Date;
 
 @Entity
@@ -16,8 +18,9 @@ public class Claim {
     @JoinColumn(name = "SR_reservation_reservation_id", referencedColumnName = "reservation_id")
     private Reservation reservation;
 
-    @Column(name = "res_claim", columnDefinition = "text", nullable = false)
-    private String claim;
+    @Column(name = "res_claim")
+    private String resClaim;
+
 
     @Column(name = "date", nullable = false)
     private Date date;
@@ -27,6 +30,10 @@ public class Claim {
 
     @Column(name = "claim_state", length = 30, nullable = false)
     private String claimState;
+
+
+    @Column(name = "image_data", columnDefinition = "bytea")
+    private byte[] imageData;
 
     @Column(name = "status", nullable = false)
     private boolean status;
@@ -43,13 +50,14 @@ public class Claim {
     public Claim() {
     }
 
-    public Claim(Long claimId, Reservation reservation, String claim, Date date, String description, String claimState, boolean status, String transactionUser, Date transactionDate, String transactionHost) {
+    public Claim(Long claimId, Reservation reservation, String resClaim, Date date, String description, String claimState, byte[] imageData, boolean status, String transactionUser, Date transactionDate, String transactionHost) {
         this.claimId = claimId;
         this.reservation = reservation;
-        this.claim = claim;
+        this.resClaim = resClaim;
         this.date = date;
         this.description = description;
         this.claimState = claimState;
+        this.imageData = imageData;
         this.status = status;
         this.transactionUser = transactionUser;
         this.transactionDate = transactionDate;
@@ -72,12 +80,12 @@ public class Claim {
         this.reservation = reservation;
     }
 
-    public String getClaim() {
-        return claim;
+    public String getResClaim() {
+        return resClaim;
     }
 
-    public void setClaim(String claim) {
-        this.claim = claim;
+    public void setResClaim(String resClaim) {
+        this.resClaim = resClaim;
     }
 
     public Date getDate() {
@@ -102,6 +110,14 @@ public class Claim {
 
     public void setClaimState(String claimState) {
         this.claimState = claimState;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
 
     public boolean isStatus() {
@@ -141,10 +157,11 @@ public class Claim {
         return "Claim{" +
                 "claimId=" + claimId +
                 ", reservation=" + reservation +
-                ", claim='" + claim + '\'' +
+                ", resClaim='" + resClaim + '\'' +
                 ", date=" + date +
                 ", description='" + description + '\'' +
                 ", claimState='" + claimState + '\'' +
+                ", imageData=" + Arrays.toString(imageData) +
                 ", status=" + status +
                 ", transactionUser='" + transactionUser + '\'' +
                 ", transactionDate=" + transactionDate +
