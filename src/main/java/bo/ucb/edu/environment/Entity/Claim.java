@@ -32,8 +32,8 @@ public class Claim {
     private String claimState;
 
 
-    @Column(name = "image_data", columnDefinition = "bytea")
-    private byte[] imageData;
+    @Column(name = "image_data")
+    private String imageData;
 
     @Column(name = "status", nullable = false)
     private boolean status;
@@ -50,7 +50,7 @@ public class Claim {
     public Claim() {
     }
 
-    public Claim(Long claimId, Reservation reservation, String resClaim, Date date, String description, String claimState, byte[] imageData, boolean status, String transactionUser, Date transactionDate, String transactionHost) {
+    public Claim(Long claimId, Reservation reservation, String resClaim, Date date, String description, String claimState, String imageData, boolean status, String transactionUser, Date transactionDate, String transactionHost) {
         this.claimId = claimId;
         this.reservation = reservation;
         this.resClaim = resClaim;
@@ -112,15 +112,15 @@ public class Claim {
         this.claimState = claimState;
     }
 
-    public byte[] getImageData() {
+    public String getImageData() {
         return imageData;
     }
 
-    public void setImageData(byte[] imageData) {
+    public void setImageData(String imageData) {
         this.imageData = imageData;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -150,22 +150,5 @@ public class Claim {
 
     public void setTransactionHost(String transactionHost) {
         this.transactionHost = transactionHost;
-    }
-
-    @Override
-    public String toString() {
-        return "Claim{" +
-                "claimId=" + claimId +
-                ", reservation=" + reservation +
-                ", resClaim='" + resClaim + '\'' +
-                ", date=" + date +
-                ", description='" + description + '\'' +
-                ", claimState='" + claimState + '\'' +
-                ", imageData=" + Arrays.toString(imageData) +
-                ", status=" + status +
-                ", transactionUser='" + transactionUser + '\'' +
-                ", transactionDate=" + transactionDate +
-                ", transactionHost='" + transactionHost + '\'' +
-                '}';
     }
 }

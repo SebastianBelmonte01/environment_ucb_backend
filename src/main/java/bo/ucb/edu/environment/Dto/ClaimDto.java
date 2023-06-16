@@ -1,5 +1,6 @@
 package bo.ucb.edu.environment.Dto;
 
+import bo.ucb.edu.environment.Entity.Reservation;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
@@ -7,7 +8,7 @@ import java.util.Date;
 
 public class ClaimDto {
     private Long claimId;
-    private Long reservationId;
+    private ReservationDto reservationDto;
     private String resClaim;
     private Date date;
     private String desClaim;
@@ -16,14 +17,14 @@ public class ClaimDto {
     private String txUser;
     private Date txDate;
     private String txHost;
-    private MultipartFile image;
+    private String image;
 
     public ClaimDto() {
     }
 
-    public ClaimDto(Long claimId, Long reservationId, String resClaim, Date date, String desClaim, String claimState, Boolean status, String txUser, Date txDate, String txHost, MultipartFile image) {
+    public ClaimDto(Long claimId, ReservationDto reservationDto, String resClaim, Date date, String desClaim, String claimState, Boolean status, String txUser, Date txDate, String txHost, String image) {
         this.claimId = claimId;
-        this.reservationId = reservationId;
+        this.reservationDto = reservationDto;
         this.resClaim = resClaim;
         this.date = date;
         this.desClaim = desClaim;
@@ -43,12 +44,12 @@ public class ClaimDto {
         this.claimId = claimId;
     }
 
-    public Long getReservationId() {
-        return reservationId;
+    public ReservationDto getReservationDto() {
+        return reservationDto;
     }
 
-    public void setReservationId(Long reservationId) {
-        this.reservationId = reservationId;
+    public void setReservationDto(ReservationDto reservationDto) {
+        this.reservationDto = reservationDto;
     }
 
     public String getResClaim() {
@@ -115,11 +116,11 @@ public class ClaimDto {
         this.txHost = txHost;
     }
 
-    public MultipartFile getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(MultipartFile image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -127,7 +128,7 @@ public class ClaimDto {
     public String toString() {
         return "ClaimDto{" +
                 "claimId=" + claimId +
-                ", reservationId=" + reservationId +
+                ", reservationDto=" + reservationDto +
                 ", resClaim='" + resClaim + '\'' +
                 ", date=" + date +
                 ", desClaim='" + desClaim + '\'' +
@@ -136,7 +137,7 @@ public class ClaimDto {
                 ", txUser='" + txUser + '\'' +
                 ", txDate=" + txDate +
                 ", txHost='" + txHost + '\'' +
-                ", image=" + image +
+                ", image='" + image + '\'' +
                 '}';
     }
 }

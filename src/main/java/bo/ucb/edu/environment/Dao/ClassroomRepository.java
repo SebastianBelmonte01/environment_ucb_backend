@@ -12,4 +12,6 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
     List<Classroom> findAllByEnvironmentEnvironmentId(Long id);
 
     Classroom findClassroomByEnvironment(Environment environment);
+
+    Classroom findClassroomByClassroomId(Long id);
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,6 +36,58 @@ public class ClaimApi {
         response.setResponse("Se guardo reclamo");
         return response;
     }
+
+    //Get all claims
+    @GetMapping("/pending/claim")
+    public ResponseDto<List<ClaimDto>> getPendingClaims(@RequestHeader Map<String, String> headers) throws Exception {
+        ResponseDto<List<ClaimDto>> response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if (!authBl.validateToken(token)) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(claimBl.getAllPendingClaims());
+        return response;
+    }
+
+    @GetMapping("/attended/claim")
+    public ResponseDto<List<ClaimDto>> getClaims(@RequestHeader Map<String, String> headers) throws Exception {
+        ResponseDto<List<ClaimDto>> response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        int id = authBl.getUserIdFromToken(token);
+        if (!authBl.validateToken(token)) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(claimBl.getAllAtendedClaims());
+        return response;
+    }
+
+   @PutMapping("/claim/attended/{claimId}")
+   public ResponseDto<String> atendClaim(@RequestHeader Map<String, String> headers, @PathVariable Long claimId, @RequestBody String claimResponse) throws Exception {
+       ResponseDto<String> response = new ResponseDto<>();
+       String token = authBl.getTokenFromHeader(headers);
+       int id = authBl.getUserIdFromToken(token);
+       if (!authBl.validateToken(token)) {
+           response.setCode("0001");
+           response.setResponse(null);
+           response.setErrorMessage("Invalid credentials");
+           return response;
+       }
+       response.setCode("0000");
+       claimBl.sendClaimResponse(claimId, claimResponse);
+       response.setResponse("Se atendio el reclamo");
+       return response;
+   }
+
+
 
 
 
