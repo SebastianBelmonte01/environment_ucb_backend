@@ -71,10 +71,6 @@ public class ClaimBl {
             claimDto.setDate(claim.getDate());
             claimDto.setDesClaim(claim.getDescription());
             claimDto.setClaimState(claim.getClaimState());
-            claimDto.setStatus(claim.getStatus());
-            claimDto.setTxUser(claim.getTransactionUser());
-            claimDto.setTxDate(claim.getTransactionDate());
-            claimDto.setTxHost(claim.getTransactionHost());
             claimDto.setImage(claim.getImageData());
             claimDtos.add(claimDto);
         }
@@ -103,10 +99,6 @@ public class ClaimBl {
             claimDto.setDate(claim.getDate());
             claimDto.setDesClaim(claim.getDescription());
             claimDto.setClaimState(claim.getClaimState());
-            claimDto.setStatus(claim.getStatus());
-            claimDto.setTxUser(claim.getTransactionUser());
-            claimDto.setTxDate(claim.getTransactionDate());
-            claimDto.setTxHost(claim.getTransactionHost());
             claimDto.setImage(claim.getImageData());
             claimDtos.add(claimDto);
         }
