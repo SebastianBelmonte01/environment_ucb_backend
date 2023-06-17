@@ -188,12 +188,10 @@ public class ReservationBl {
     }
 
     public void deleteReservation(Long reservationId){
-        reservationRepository.updateReservationDeletion(reservationId, "Eliminado");
+        reservationRepository.updateReservationState(reservationId, "Eliminado");
     }
 
-    public void acceptedRejection(Long reservationId){
-        reservationRepository.updateReservationState(reservationId, "Rachazo aceptado");
-    }
+
 
 }
 

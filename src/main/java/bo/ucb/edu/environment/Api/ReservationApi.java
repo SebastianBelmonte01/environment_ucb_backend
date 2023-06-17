@@ -186,7 +186,7 @@ public class ReservationApi {
             return response;
         }
         response.setCode("0000");
-        reservationBl.deleteReservation(idReservation);
+        reservationBl. deleteReservation(idReservation);
         response.setResponse("Finalizado");
         return response;
     }
