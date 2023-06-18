@@ -38,8 +38,8 @@ public class ClaimApi {
     }
 
     //Get all claims
-    @GetMapping("/pending/claim")
-    public ResponseDto<List<ClaimDto>> getPendingClaims(@RequestHeader Map<String, String> headers) throws Exception {
+    @GetMapping("/pending/claim/admin")
+    public ResponseDto<List<ClaimDto>> getPendingClaimsAdmin(@RequestHeader Map<String, String> headers) throws Exception {
         ResponseDto<List<ClaimDto>> response = new ResponseDto<>();
         String token = authBl.getTokenFromHeader(headers);
         int id = authBl.getUserIdFromToken(token);
@@ -54,23 +54,9 @@ public class ClaimApi {
         return response;
     }
 
-    @GetMapping("/attended/claim")
-    public ResponseDto<List<ClaimDto>> getClaims(@RequestHeader Map<String, String> headers) throws Exception {
-        ResponseDto<List<ClaimDto>> response = new ResponseDto<>();
-        String token = authBl.getTokenFromHeader(headers);
-        int id = authBl.getUserIdFromToken(token);
-        if (!authBl.validateToken(token)) {
-            response.setCode("0001");
-            response.setResponse(null);
-            response.setErrorMessage("Invalid credentials");
-            return response;
-        }
-        response.setCode("0000");
-        response.setResponse(claimBl.getAllAtendedClaims());
-        return response;
-    }
 
-   @PutMapping("/claim/attended/{claimId}")
+
+   @PutMapping("/claim/attend/{claimId}")
    public ResponseDto<String> atendClaim(@RequestHeader Map<String, String> headers, @PathVariable Long claimId, @RequestBody String claimResponse) throws Exception {
        ResponseDto<String> response = new ResponseDto<>();
        String token = authBl.getTokenFromHeader(headers);
@@ -86,6 +72,58 @@ public class ClaimApi {
        response.setResponse("Se atendio el reclamo");
        return response;
    }
+
+    @GetMapping("/attended/claim")
+    public ResponseDto<List<ClaimDto>> getClaims(@RequestHeader Map<String, String> headers) throws Exception {
+        ResponseDto<List<ClaimDto>> response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        Long id = (long) authBl.getUserIdFromToken(token);
+        if (!authBl.validateToken(token)) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(claimBl.getUserClaimsByState(id, "Atendido"));
+        return response;
+    }
+
+    @GetMapping("/pending/claim")
+    public ResponseDto<List<ClaimDto>> getPendingClaims(@RequestHeader Map<String, String> headers) throws Exception {
+        ResponseDto<List<ClaimDto>> response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        Long id = (long) authBl.getUserIdFromToken(token);
+        if (!authBl.validateToken(token)) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        response.setResponse(claimBl.getUserClaimsByState(id, "Pendiente"));
+        return response;
+    }
+
+    @PutMapping("/accept/claim/{claimId}")
+    public ResponseDto<String> acceptClaim(@RequestHeader Map<String, String> headers, @PathVariable Long claimId) throws Exception {
+        ResponseDto<String> response = new ResponseDto<>();
+        String token = authBl.getTokenFromHeader(headers);
+        if (!authBl.validateToken(token)) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid credentials");
+            return response;
+        }
+        response.setCode("0000");
+        claimBl.updateClaimState(claimId, "Reclamo Aceptado");
+        response.setResponse("Se acepto el reclamo");
+        return response;
+    }
+
+
+
+
 
 
 

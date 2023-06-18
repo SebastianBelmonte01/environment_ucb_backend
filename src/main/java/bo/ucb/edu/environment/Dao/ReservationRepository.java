@@ -3,6 +3,7 @@ package bo.ucb.edu.environment.Dao;
 import bo.ucb.edu.environment.Entity.Professor;
 import bo.ucb.edu.environment.Entity.Request;
 import bo.ucb.edu.environment.Entity.Reservation;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     //Update the state of the request to 'Aceptada'
     @Modifying
     @Query("UPDATE Reservation sr SET sr.resState = :msg WHERE sr.reservationId = :id")
+    @Transactional
     void updateReservationState(@Param("id") Long id, @Param("msg") String msg);
 
     @Query("SELECT new bo.ucb.edu.environment.Entity.Reservation(sres.reservationId, sres.classroomId, sres.request, sres.resState, sres.reasonRej, sres.status, sres.txHost, sres.txUser, sres.txDate) " +

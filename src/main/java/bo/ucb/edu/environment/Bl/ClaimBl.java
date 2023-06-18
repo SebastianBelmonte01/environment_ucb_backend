@@ -32,6 +32,7 @@ public class ClaimBl {
     ClassroomRepository classroomRepository;
 
     public void saveNewClaim(String description, byte[] imageData, Long reservationId) throws IOException {
+        reservationDao.updateReservationState(reservationId, "Reclamado");
         Claim claim = new Claim();
         claim.setClaimState("Pendiente");
         //image data to BASE64
@@ -105,6 +106,34 @@ public class ClaimBl {
         return claimDtos;
     }
 
+    public List<ClaimDto> getUserClaimsByState(Long userId, String status){
+        List<Claim> claims = claimDao.findAllByUserAndStatus(status, userId);
+        List<ClaimDto> claimDtos = new ArrayList<>();
+        for (Claim claim: claims) {
+            ReservationDto reservationDto = new ReservationDto();
+            ClaimDto claimDto = new ClaimDto();
+            reservationDto.setReservationId(claim.getReservation().getReservationId());
+            reservationDto.setProfessorName(claim.getReservation().getRequest().getProfessor().getName());
+            reservationDto.setSubject(claim.getReservation().getRequest().getSubjectProfessor().getSubject().getName());
+            reservationDto.setParallel(claim.getReservation().getRequest().getSubjectProfessor().getParallel());
+            reservationDto.setPeople(claim.getReservation().getRequest().getPeople());
+            reservationDto.setReservationDate(claim.getReservation().getRequest().getDate().toString());
+            reservationDto.setReservationTimeInit(claim.getReservation().getRequest().getStartTime().toString());
+            reservationDto.setReservationTimeEnd(claim.getReservation().getRequest().getEndTime().toString());
+            reservationDto.setEnvironment(claim.getReservation().getRequest().getEnvironment().getType());
+            reservationDto.setBuilding(classroomRepository.findClassroomByClassroomId(claim.getReservation().getClassroomId()).getBuilding());
+            reservationDto.setClassroom(classroomRepository.findClassroomByClassroomId(claim.getReservation().getClassroomId()).getCode());
+            claimDto.setClaimId(claim.getClaimId());
+            claimDto.setReservationDto(reservationDto);
+            claimDto.setDate(claim.getDate());
+            claimDto.setDesClaim(claim.getDescription());
+            claimDto.setClaimState(claim.getClaimState());
+            claimDto.setImage(claim.getImageData());
+            claimDtos.add(claimDto);
+        }
+        return claimDtos;
+    }
+
     public void sendClaimResponse (Long claimId, String claimResponse) {
         //claimDao.updateClaimState(claimId, claimResponse, "Atendido");
         Claim claim = claimDao.findClaimByClaimId(claimId);
@@ -112,6 +141,13 @@ public class ClaimBl {
         claim.setResClaim(claimResponse);
         claimDao.save(claim);
     }
+
+    public void updateClaimState(Long claimId, String claimState) {
+        claimDao.updateClaimState(claimId, claimState);
+    }
+
+
+
 
 
 
