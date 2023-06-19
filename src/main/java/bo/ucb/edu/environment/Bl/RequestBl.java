@@ -125,6 +125,7 @@ public class RequestBl {
         request.setStatus(false);
         request.setReqState("Cancelado");
         Request updatedRequest = requestRepository.save(request);
+        reservationRepository.deleterReservation(request.getRequestId(), "Cancelado");
         RequestDto requestDto = new RequestDto();
         requestDto.setId(updatedRequest.getRequestId());
         requestDto.setProfessorName(updatedRequest.getProfessor().getName());
