@@ -127,6 +127,7 @@ public class ClaimBl {
             claimDto.setReservationDto(reservationDto);
             claimDto.setDate(claim.getDate());
             claimDto.setDesClaim(claim.getDescription());
+            claimDto.setResClaim(claim.getResClaim());
             claimDto.setClaimState(claim.getClaimState());
             claimDto.setImage(claim.getImageData());
             claimDtos.add(claimDto);

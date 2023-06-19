@@ -177,7 +177,7 @@ public class ReservationApi {
     }
 
     @PutMapping("/reservation/delete/{idReservation}")
-    public ResponseDto<String> deleteReservation(@RequestHeader("Authorization") String token, @PathVariable Long idReservation) {
+    public ResponseDto<ReservationDto> deleteReservation(@RequestHeader("Authorization") String token, @PathVariable Long idReservation) {
         ResponseDto response = new ResponseDto<>();
         if (!authBl.validateToken(token)) {
             response.setCode("0001");
@@ -186,8 +186,7 @@ public class ReservationApi {
             return response;
         }
         response.setCode("0000");
-        reservationBl. deleteReservation(idReservation);
-        response.setResponse("Finalizado");
+        response.setResponse(reservationBl.deleteReservation(idReservation));
         return response;
     }
 

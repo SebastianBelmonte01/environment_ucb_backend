@@ -187,8 +187,22 @@ public class ReservationBl {
         return entranceUserDto;
     }
 
-    public void deleteReservation(Long reservationId){
+    public ReservationDto deleteReservation(Long reservationId){
         reservationRepository.updateReservationState(reservationId, "Eliminado");
+        Reservation reservation = reservationRepository.findById(reservationId).get();
+        Request request = requestRepository.findRequestByRequestId(reservation.getRequest().getRequestId());
+        ReservationDto reservationDto = new ReservationDto();
+        reservationDto.setReservationId(reservation.getReservationId());
+        reservationDto.setProfessorName(request.getProfessor().getName());
+        Date date = request.getDate();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        reservationDto.setSubject(request.getSubjectProfessor().getSubject().getName());
+        reservationDto.setParallel(request.getSubjectProfessor().getParallel());
+        reservationDto.setEnvironment(request.getEnvironment().getType());
+        reservationDto.setPeople(request.getPeople());
+        reservationDto.setReason(request.getReason());
+        reservationDto.setRequestId(request.getRequestId());
+        return reservationDto;
     }
 
 

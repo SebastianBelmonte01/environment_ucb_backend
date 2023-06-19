@@ -56,7 +56,7 @@ public class ClaimApi {
 
 
 
-   @PutMapping("/claim/attend/{claimId}")
+   @PutMapping("/attend/claim/{claimId}")
    public ResponseDto<String> atendClaim(@RequestHeader Map<String, String> headers, @PathVariable Long claimId, @RequestBody String claimResponse) throws Exception {
        ResponseDto<String> response = new ResponseDto<>();
        String token = authBl.getTokenFromHeader(headers);
