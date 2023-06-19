@@ -4,6 +4,10 @@ spring:
     username: postgres
     password: 123456
     url: jdbc:postgresql://localhost:5432/environment_ucb_db
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:

@@ -40,4 +40,9 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
     @Transactional
     void updateClaimState(@Param("id") Long id, @Param("state") String state);
 
+    @Modifying
+    @Query("UPDATE Claim c SET c.claimState = :state , c.status = false WHERE c.claimId = :id")
+    @Transactional
+    void deleteClaim(@Param("id") Long id, @Param("state") String state);
+
 }

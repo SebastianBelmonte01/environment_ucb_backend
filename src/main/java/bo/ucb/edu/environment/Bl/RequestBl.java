@@ -58,7 +58,7 @@ public class RequestBl {
 
     public RequestDto getLastRequest (int id){
         Professor professor = professorRepository.getProfessorByUserId(id);
-        Request request = requestRepository.findTopByProfessorAndStatusIsTrueOrderByRequestIdDesc(professor);
+        Request request = requestRepository.findTopByProfessorOrderByRequestIdDesc(professor);
         System.out.println(request);
         RequestDto requestDto = new RequestDto();
         requestDto.setId(request.getRequestId());
@@ -190,7 +190,7 @@ public class RequestBl {
                     }
                     else {
                         message = "Sin Espacio";
-                        requestRepository.updateRequestByRequestId(requestSearchDto.getRequestId(), message);
+                        requestRepository.updateRequestAndDeleteByRequestId(requestSearchDto.getRequestId(), message);
                     }
                 }
 

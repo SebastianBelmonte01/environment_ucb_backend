@@ -23,6 +23,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Transactional
     void updateReservationState(@Param("id") Long id, @Param("msg") String msg);
 
+    @Modifying
+    @Query("UPDATE Reservation sr SET sr.resState = :msg, sr.status = false WHERE sr.reservationId = :id")
+    @Transactional
+    void deleterReservation(@Param("id") Long id, @Param("msg") String msg);
+
     @Query("SELECT new bo.ucb.edu.environment.Entity.Reservation(sres.reservationId, sres.classroomId, sres.request, sres.resState, sres.reasonRej, sres.status, sres.txHost, sres.txUser, sres.txDate) " +
             "FROM Professor sp, Request sr, Reservation sres, Classroom sc, Environment se " +
             "WHERE sp.professorId = :professorId " +

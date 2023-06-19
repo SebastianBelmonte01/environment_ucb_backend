@@ -153,7 +153,7 @@ public class ReservationBl {
 
     public RequestDto cancelReservation(Long reservationId ){
         String message = "Cancelado";
-        reservationRepository.updateReservationState(reservationId, message);
+        reservationRepository.deleterReservation(reservationId, message);
         Reservation reservation = reservationRepository.findById(reservationId).get();
         Request request = requestRepository.findRequestByRequestId(reservation.getRequest().getRequestId());
         RequestDto requestDto = new RequestDto();

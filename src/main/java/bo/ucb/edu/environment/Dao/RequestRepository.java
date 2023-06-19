@@ -16,7 +16,7 @@ import java.util.List;
 
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
-    Request findTopByProfessorAndStatusIsTrueOrderByRequestIdDesc (Professor professor);
+    Request findTopByProfessorOrderByRequestIdDesc (Professor professor);
     List<Request> findAllByProfessorAndStatusIsTrue(Professor professor);
     Request findRequestByRequestIdAndProfessor(Long id, Professor professor);
 
@@ -25,13 +25,18 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             "WHERE se.environmentId = sr.environment.environmentId " +
             "AND se.environmentId = sc.environment.environmentId " +
             "AND sr.date = :date " +
-            "AND sr.environment.environmentId = :envId")
+            "AND sr.environment.environmentId = :envId " +
+            "AND sr.status = true ")
     List<RequestSearchDto> findAllRequests(@Param("envId") Long envId, @Param("date") Date date);
 
 
     @Modifying
     @Query("UPDATE Request sr SET sr.reqState = :reqState WHERE sr.requestId = :reqId")
     void updateRequestByRequestId(@Param("reqId") Long reqId, @Param("reqState") String reqState);
+
+    @Modifying
+    @Query("UPDATE Request sr SET sr.reqState = :reqState, sr.status = false WHERE sr.requestId = :reqId")
+    void updateRequestAndDeleteByRequestId(@Param("reqId") Long reqId, @Param("reqState") String reqState);
 
     Request findRequestByRequestId(Long id);
 

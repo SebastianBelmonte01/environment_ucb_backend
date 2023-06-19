@@ -116,7 +116,7 @@ public class ClaimApi {
             return response;
         }
         response.setCode("0000");
-        claimBl.updateClaimState(claimId, "Reclamo Aceptado");
+        claimBl.deleteClaim(claimId, "Reclamo Aceptado");
         response.setResponse("Se acepto el reclamo");
         return response;
     }

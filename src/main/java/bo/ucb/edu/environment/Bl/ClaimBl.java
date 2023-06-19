@@ -147,6 +147,11 @@ public class ClaimBl {
         claimDao.updateClaimState(claimId, claimState);
     }
 
+    public void deleteClaim(Long claimId, String claimState) {
+        claimDao.deleteClaim(claimId, claimState);
+    }
+
+
 
 
 
