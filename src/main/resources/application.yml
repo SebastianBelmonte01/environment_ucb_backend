@@ -13,4 +13,17 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
-
+chaos:
+  monkey:
+    enabled: true
+    watcher:
+      service: false
+      controller: false
+      repository: false
+      restController: true
+    assaults:
+      level: 10
+      latencyActive: true
+      latencyRangeStart: 1000
+      latencyRangeEnd: 3000
+      exceptionsActive: true
