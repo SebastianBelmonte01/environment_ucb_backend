@@ -31,6 +31,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("SELECT new bo.ucb.edu.environment.Entity.Reservation(sres.reservationId, sres.classroomId, sres.request, sres.resState, sres.reasonRej, sres.status, sres.txHost, sres.txUser, sres.txDate) " +
             "FROM Professor sp, Request sr, Reservation sres, Classroom sc, Environment se " +
             "WHERE sp.professorId = :professorId " +
+            "AND sp.professorId = sr.professor.professorId " +
             "AND sr.requestId = sres.request.requestId " +
             "AND se.environmentId = sr.environment.environmentId " +
             "AND sres.classroomId = sc.classroomId " +

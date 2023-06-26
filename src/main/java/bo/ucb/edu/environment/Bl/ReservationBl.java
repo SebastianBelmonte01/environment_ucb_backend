@@ -82,6 +82,11 @@ public class ReservationBl {
     }
     public List<ReservationDto> getReservatonByState(int id, String state){
         Professor professor = professorRepository.getProfessorByUserId(id);
+        System.out.println("USUARIO:");
+        System.out.println(id);
+        System.out.println("PROFESOR:");
+        System.out.println(professor.getProfessorId());
+        System.out.println(professor.getName());
         List<Reservation> reservations = reservationRepository.findAllReservationsByProfesorAndResState(professor.getProfessorId(), state);
         List<ReservationDto> reservationsDtos = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
