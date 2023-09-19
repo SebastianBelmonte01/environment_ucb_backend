@@ -48,6 +48,15 @@ public class UserGroup {
         this.srGroup = srGroup;
     }
 
+    public UserGroup(User srUser, Group srGroup) {
+        this.status = true;
+        this.txHost = "localhost";
+        this.txUser = "User";
+        this.txDate = new Date();
+        this.srUser = srUser;
+        this.srGroup = srGroup;
+    }
+
     public Long getUserGroupId() {
         return userGroupId;
     }

@@ -35,7 +35,6 @@ public class AuthBl {
 
     public TokenDto login(LoginDto login) {
         Hash hash = new Hash();
-        System.out.println(login.getEmail() + " " + login.getSecret());
         System.out.println("HASHED");
         System.out.println(hash.hashString(login.getSecret(), login.getEmail()));
         User user = loginDao.findByEmailAndSecret(login.getEmail(), hash.hashString(login.getSecret(), login.getEmail()));
@@ -60,7 +59,7 @@ public class AuthBl {
                     .withClaim("userId", userId)
                     .withClaim("type", type)
                     .withClaim("email", email)
-                    .withClaim("isAdmin", roles.contains("Solicitar ambiente") ? false : true)
+                    .withClaim("isAdmin", roles.contains("Atender reclamos") ? true : false)
                     .withArrayClaim("roles", roles.toArray(new String[roles.size()]))
                     .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * minutes)) // 24 horas
                     .sign(algorithm);

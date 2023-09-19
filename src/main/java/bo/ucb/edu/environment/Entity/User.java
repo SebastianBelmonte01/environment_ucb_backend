@@ -45,12 +45,21 @@ public class User {
         this.userId = userId;
         this.email = email;
         this.secret = secret;
-        this.status = status;
-        this.txHost = txHost;
-        this.txUser = txUser;
-        this.txDate = txDate;
+        this.status = true;
+        this.txHost = "Localhost";
+        this.txUser = "USuario";
+        this.txDate = new Date();
         this.srProfessor = srProfessor;
         this.userGroups = userGroups;
+    }
+
+    public User (String email, String secret){
+        this.email = email;
+        this.secret = secret;
+        this.status = true;
+        this.txHost = "Localhost";
+        this.txUser = "Usuario";
+        this.txDate = new Date();
     }
 
     public Long getUserId() {
