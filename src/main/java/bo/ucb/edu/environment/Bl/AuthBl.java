@@ -6,6 +6,7 @@ import bo.ucb.edu.environment.Dao.VerificationCodeRepository;
 import bo.ucb.edu.environment.Dto.ChangePasswordDto;
 import bo.ucb.edu.environment.Dto.LoginDto;
 import bo.ucb.edu.environment.Dto.TokenDto;
+import bo.ucb.edu.environment.Dto.UserDto;
 import bo.ucb.edu.environment.Entity.User;
 import bo.ucb.edu.environment.Entity.VerificationCode;
 import bo.ucb.edu.environment.Utils.Hash;
@@ -37,6 +38,7 @@ public class AuthBl {
 
     @Autowired
     private JavaMailSender mailSender;
+
 
 
     public static String KEY = "barcelonaCampeon2023";
@@ -139,16 +141,17 @@ public class AuthBl {
             String uuid = UUID.randomUUID().toString();
             Random random = new Random();
             int randomNumber = random.nextInt(9999);
+            Long longRandomNumber = Long.valueOf(randomNumber);
             VerificationCode verificationCode = new VerificationCode();
             verificationCode.setVcUuid(uuid);
-            verificationCode.setCode(randomNumber);
+            verificationCode.setCode(longRandomNumber);
             verificationCode.setUserId(user.getUserId());
             verificationCode.setTxDate(new Date());
             verificationCode.setStatus(true);
-            verificationCodeRepository.saveAndFlush(verificationCode);
+            verificationCodeRepository.save(verificationCode);
             // Enviar correo electrónico al usuario con un codigo
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(loginDao.findUserEmail(user.getUserId()));
+            message.setTo(user.getEmail());
             message.setSubject("Recuperación de contraseña");
             message.setText("Para" + user.getEmail() + "! Tu codigo de recuperacion de contrasena es: " + verificationCode.getCode());
             mailSender.send(message);
@@ -158,24 +161,20 @@ public class AuthBl {
         }
     }
 
-    public boolean verifyCode(String code) {
-        VerificationCode verificationCode = verificationCodeRepository.findByCode(Integer.parseInt(code));
-        if (verificationCode != null) {
-            // Actualizar el estado del codigo de verificacion
-            int updatedCount = verificationCodeRepository.updateStatus(Integer.parseInt(code));
-            return updatedCount == 1;
-        } else {
-            return false;
-        }
-    }
+
+
 
     public boolean changePassword(ChangePasswordDto changePasswordDto) {
+        Hash hash = new Hash();
         User user = loginDao.findByEmail(changePasswordDto.getEmail());
-        String passwordHash = hashPassword(changePasswordDto.getNewPassword());
+        String passwordHash = hash.hashString(changePasswordDto.getNewPassword(), changePasswordDto.getEmail());
         if (user != null) {
-            // Actualizar la contraseña del usuario
-            int updatedCount = loginDao.updatePassword(user.getEmail(), passwordHash);
-            return updatedCount == 1;
+            User userUpdated = loginDao.updatePasswordByUserId(user.getUserId(), passwordHash);
+            if(userUpdated != null) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

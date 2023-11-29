@@ -7,14 +7,14 @@ import java.util.Date;
 @Table(name = "verification_code")
 public class VerificationCode {
     @Id
-    @Column(name = "vc_uuid")
+    @Column(name = "vcuuid")
     private String vcUuid;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "userid")
+    private Long userId;
 
     @Column(name = "code")
-    private Integer code;
+    private Long code;
 
     @Column(name = "status")
     private Boolean status;
@@ -22,13 +22,13 @@ public class VerificationCode {
     @Column(name = "version")
     private Integer version;
 
-    @Column(name = "tx_date")
+    @Column(name = "txdate")
     private Date txDate;
 
-    @Column(name = "tx_host")
+    @Column(name = "txhost")
     private String txHost;
 
-    @Column(name = "tx_user")
+    @Column(name = "txuser")
     private String txUser;
 
     // Constructors, getters, and setters
@@ -37,7 +37,7 @@ public class VerificationCode {
         // Default constructor
     }
 
-    public VerificationCode(String vcUuid, Integer userId, Integer code, Boolean status, Integer version, Date txDate, String txHost, String txUser) {
+    public VerificationCode(String vcUuid, Long userId, Long code, Boolean status, Integer version, Date txDate, String txHost, String txUser) {
         this.vcUuid = vcUuid;
         this.userId = userId;
         this.code = code;
@@ -58,19 +58,19 @@ public class VerificationCode {
         this.vcUuid = vcUuid;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public Integer getCode() {
+    public Long getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(Long code) {
         this.code = code;
     }
 
@@ -112,5 +112,19 @@ public class VerificationCode {
 
     public void setTxUser(String txUser) {
         this.txUser = txUser;
+    }
+
+    @Override
+    public String toString() {
+        return "VerificationCode{" +
+                "vcUuid='" + vcUuid + '\'' +
+                ", userId=" + userId +
+                ", code=" + code +
+                ", status=" + status +
+                ", version=" + version +
+                ", txDate=" + txDate +
+                ", txHost='" + txHost + '\'' +
+                ", txUser='" + txUser + '\'' +
+                '}';
     }
 }

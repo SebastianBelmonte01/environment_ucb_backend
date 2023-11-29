@@ -13,6 +13,18 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+  mail:
+    host: localhost
+    port: 1025
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+            required: false
 chaos:
   monkey:
     enabled: true

@@ -1,9 +1,11 @@
 package bo.ucb.edu.environment.Utils;
 
+import org.springframework.stereotype.Service;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+@Service
 public class Hash {
 
     public Hash() {
