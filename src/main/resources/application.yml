@@ -1,3 +1,4 @@
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -39,3 +40,5 @@ chaos:
       latencyRangeStart: 1000
       latencyRangeEnd: 3000
       exceptionsActive: true
+server:
+  port: 8080
