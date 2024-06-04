@@ -75,6 +75,7 @@ public class RequestApi {
     @GetMapping("/request/pending")
     public ResponseDto<List<RequestDto>> getPendingRequests(@RequestHeader Map<String, String> headers) throws Exception {
         ResponseDto<List<RequestDto>> response = new ResponseDto<>();
+
         String token = authBl.getTokenFromHeader(headers);
         int id = authBl.getUserIdFromToken(token);
         if(!authBl.validateToken(token)){

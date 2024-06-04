@@ -102,6 +102,7 @@ public class AuthBl {
     }
 
     public int getUserIdFromToken(String jwt)  {
+        System.out.println("JWT: " + jwt);
         int userId;
         try {
             userId = JWT.require(Algorithm.HMAC256(KEY))
