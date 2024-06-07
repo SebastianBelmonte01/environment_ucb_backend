@@ -27,6 +27,10 @@ public class UserBl {
         Validation validation = new Validation();
         Hash hash = new Hash();
         validation.validateEmail(user.getEmail());
+        if(userRepository.findByEmail(user.getEmail()) != null){
+            return null;
+
+        }
         user.setPassword(hash.hashString(user.getPassword(), user.getEmail()));
         System.out.println("HASHED Password: " + user.getPassword());
         log.info("Inserting values into User table");
